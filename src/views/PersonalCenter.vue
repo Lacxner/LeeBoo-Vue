@@ -50,15 +50,15 @@
 
             <!-- 对话框底部按钮 -->
             <span slot="footer">
-                <el-button @click="resetPassDialogVisible = false" size="medium">取 消</el-button>
-                <el-button type="primary" @click="resetPassword" size="medium">确 定</el-button>
+                <el-button @click="resetPassDialogVisible = false" size="medium">取消</el-button>
+                <el-button type="primary" @click="resetPassword" size="medium">确定</el-button>
             </span>
         </el-dialog>
 
         <!-- 底部 -->
         <span slot="footer" style="display: flex; justify-content: flex-start">
-            <el-button @click="resetPassDialogVisible = true" size="medium" type="warning">修改密码</el-button>
-            <el-button type="primary" @click="save" size="medium" style="margin-left: 20px" :loading="saving">保 存</el-button>
+            <el-button @click="resetPassDialogVisible = true" size="medium" type="warning" style="width: 100px">修改密码</el-button>
+            <el-button type="primary" @click="save" size="medium" :loading="saving" style="width: 100px">保 存</el-button>
         </span>
     </div>
 </template>

@@ -34,6 +34,8 @@ export default {
 				version: null,
 				company: null
 			},
+			// 加载中提示
+			loading: false,
 			// 保存中提示
 			saving: false,
 			// 校验规则
@@ -47,6 +49,11 @@ export default {
 		}
 	},
 	mounted() {
+		this.loading = this.$loading({
+            lock: true,
+            target: document.getElementById('systemConfigForm'),
+            text: '加载中'
+        })
 		this.refreshSystemConfig()
 	},
 	methods: {
@@ -59,6 +66,7 @@ export default {
 				this.formData = response.data.item
 				Message.handle(res)
 				this.saving = false
+				this.loading.close()
 			})
 		},
 		/**
@@ -74,3 +82,9 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+.el-button {
+    width: 100px;
+}
+</style>

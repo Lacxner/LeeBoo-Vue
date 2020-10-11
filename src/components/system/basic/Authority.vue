@@ -59,8 +59,8 @@
             
             <!-- 对话框底部按钮 -->
             <span slot="footer">
-                <el-button @click="dialogVisible = false" size="medium">取 消</el-button>
-                <el-button type="primary" @click="addOrEditRole" size="medium">确 定</el-button>
+                <el-button @click="dialogVisible = false" size="medium">取消</el-button>
+                <el-button type="primary" @click="addOrEditRole" size="medium">确定</el-button>
             </span>
         </el-dialog>
 

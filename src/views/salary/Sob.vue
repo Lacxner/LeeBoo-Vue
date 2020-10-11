@@ -25,12 +25,6 @@
                     {{ scope.row.basicSalary + '元' }}
                 </template>
             </el-table-column>
-            <!-- 奖金 -->
-            <el-table-column :resizable="false" show-overflow-tooltip header-align="center" align="center" prop="bonus" label="奖金" width="120">
-                <template slot-scope="scope">
-                    {{ scope.row.bonus + '元' }}
-                </template>
-            </el-table-column>
             <!-- 午餐补助 -->
             <el-table-column :resizable="false" show-overflow-tooltip header-align="center" align="center" prop="lunchSalary" label="午餐补助" width="120">
                 <template slot-scope="scope">
@@ -115,7 +109,6 @@
             <el-steps :active="activeIndex" align-center finish-status="success" style="margin-bottom: 20px">
                 <el-step title="账套名称"></el-step>
                 <el-step title="基础工资"></el-step>
-                <el-step title="奖金"></el-step>
                 <el-step title="午餐补助"></el-step>
                 <el-step title="交通补助"></el-step>
                 <el-step title="养老保险"></el-step>
@@ -133,20 +126,16 @@
                 <el-form-item label="基础工资" prop="basicSalary" size="medium" v-show="activeIndex === 1" label-width="80px">
                     <el-input-number v-model="formData.basicSalary" :min="0" :step="500" label="基础工资"></el-input-number>
                 </el-form-item>
-                <!-- 奖金 -->
-                <el-form-item label="奖金" prop="bonus" size="medium" v-show="activeIndex === 2" label-width="52px">
-                    <el-input-number v-model="formData.bonus" :min="0" :step="200" label="奖金"></el-input-number>
-                </el-form-item>
                 <!-- 午餐补助 -->
-                <el-form-item label="午餐补助" prop="lunchSalary" size="medium" v-show="activeIndex === 3" label-width="80px">
+                <el-form-item label="午餐补助" prop="lunchSalary" size="medium" v-show="activeIndex === 2" label-width="80px">
                     <el-input-number v-model="formData.lunchSalary" :min="0" :step="100" label="午餐补助"></el-input-number>
                 </el-form-item>
                 <!-- 交通补助 -->
-                <el-form-item label="交通补助" prop="trafficSalary" size="medium" v-show="activeIndex === 4" label-width="80px">
+                <el-form-item label="交通补助" prop="trafficSalary" size="medium" v-show="activeIndex === 3" label-width="80px">
                     <el-input-number v-model="formData.trafficSalary" :min="0" :step="100" label="交通补助"></el-input-number>
                 </el-form-item>
                 <!-- 养老保险 -->
-                <div v-show="activeIndex === 5" style="display: flex; justify-content: flex-start">
+                <div v-show="activeIndex === 4" style="display: flex; justify-content: flex-start">
                     <!-- 基数 -->
                     <el-form-item label="养老保险基数" prop="pensionBase" size="medium" label-width="108px">
                         <el-input-number v-model="formData.pensionBase" :min="0" :step="200" label="养老保险基数"></el-input-number>
@@ -157,7 +146,7 @@
                     </el-form-item>
                 </div>
                 <!-- 医疗保险 -->
-                <div v-show="activeIndex === 6" style="display: flex; justify-content: flex-start">
+                <div v-show="activeIndex === 5" style="display: flex; justify-content: flex-start">
                     <!-- 基数 -->
                     <el-form-item label="医疗保险基数" prop="medicalBase" size="medium" label-width="108px">
                         <el-input-number v-model="formData.medicalBase" :min="0" :step="200" label="医疗保险基数"></el-input-number>
@@ -168,7 +157,7 @@
                     </el-form-item>
                 </div>
                 <!-- 公积金 -->
-                <div v-show="activeIndex === 7" style="display: flex; justify-content: flex-start">
+                <div v-show="activeIndex === 6" style="display: flex; justify-content: flex-start">
                     <!-- 基数 -->
                     <el-form-item label="公积金基数" prop="accumulationFundBase" size="medium" label-width="94px">
                         <el-input-number v-model="formData.accumulationFundBase" :min="0" :step="200" label="公积金基数"></el-input-number>
@@ -214,9 +203,9 @@ export default {
             search: '',
             // 添加或编辑时表单的工资账套
             formData: {
+                id: null,
                 name: null,
                 basicSalary: null,
-                bonus: null,
                 lunchSalary: null,
                 trafficSalary: null,
                 allSalary: null,
@@ -286,11 +275,11 @@ export default {
             this.$refs.salaryForm.validate((valid) => {
                 if (valid) {
                     // 步骤条变化
-                    if (this.activeIndex <= 7) {
+                    if (this.activeIndex <= 6) {
                         this.activeIndex++
                     }
                     // 按钮变化
-                    if (this.activeIndex === 8) {
+                    if (this.activeIndex === 7) {
                         this.addOrEditSalary()
                     } else if (this.activeIndex === 7) {
                         this.rightButtonText = '确定'
@@ -320,12 +309,23 @@ export default {
             this.dialogVisible = true
         },
         /**
-         * 添加或编辑工资账套
+         * 添加或修改工资账套
          */
         addOrEditSalary() {
             // 点击了确定后立马关闭对话框并开启加载中提示，提高用户体验
             this.dialogVisible = false
             this.tableLoading = true
+
+            // 添加或修改前的数据非空校验
+            this.formData.basicSalary = this.formData.basicSalary == null ? 0 : this.formData.basicSalary
+            this.formData.lunchSalary = this.formData.lunchSalary == null ? 0 : this.formData.lunchSalary
+            this.formData.trafficSalary = this.formData.trafficSalary == null ? 0 : this.formData.trafficSalary
+            this.formData.pensionBase = this.formData.pensionBase == null ? 0 : this.formData.pensionBase
+            this.formData.pensionPer = this.formData.pensionPer == null ? 0 : this.formData.pensionPer
+            this.formData.medicalBase = this.formData.medicalBase == null ? 0 : this.formData.medicalBase
+            this.formData.medicalPer = this.formData.medicalPer == null ? 0 : this.formData.medicalPer
+            this.formData.accumulationFundBase = this.formData.accumulationFundBase == null ? 0 : this.formData.accumulationFundBase
+            this.formData.accumulationFundPer = this.formData.accumulationFundPer == null ? 0 : this.formData.accumulationFundPer
 
             this.computeAllSalary()
             // 如果当前表单数据的id属性有值就代表要修改，反之就表示添加
@@ -410,7 +410,7 @@ export default {
          */
         computeAllSalary() {
             this.formData.allSalary
-            = this.formData.basicSalary + this.formData.bonus + this.formData.trafficSalary
+            = this.formData.basicSalary + this.formData.trafficSalary
             - (this.formData.pensionBase * this.formData.pensionPer / 100)
             - (this.formData.medicalBase * this.formData.medicalPer / 100)
             - (this.formData.accumulationFundBase * this.formData.accumulationFundPer / 100)
@@ -420,7 +420,6 @@ export default {
          */
         resetFormData() {
             this.$refs.salaryForm.resetFields()
-            this.formData.id = null
             this.activeIndex = 0
             this.leftButtonText = '取消'
             this.rightButtonText = '下一步'

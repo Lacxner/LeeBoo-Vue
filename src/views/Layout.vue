@@ -56,7 +56,7 @@
                 </el-menu-item>
 
                 <!-- 动态路由 -->
-                <el-submenu v-for="(item, index) in routes" :key="index" :index="index.toString()" v-if="!item.hidden">
+                <el-submenu v-for="(item, index) in routes" :key="index" :index="index.toString()" v-show="!item.hidden">
                     <template slot="title">
                         <i :class="item.icon" class="oneLevelMenuIcon"></i>
                         <span>{{ item.name }}</span>

@@ -1,6 +1,6 @@
 import Axios from '@/utils/interceptor'
 
-const BASE_URL = '/employee/basic'
+const BASE_URL = '/employee/info'
 
 export function getAllEmployees(currentPage, pageSize) {
     return Axios({

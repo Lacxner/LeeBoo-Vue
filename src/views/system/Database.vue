@@ -1,7 +1,7 @@
 <template>
     <div style="display: flex; justify-content: flex-start">
         <!-- 备份数据库 -->
-        <el-card class="box-card">
+        <el-card class="box-card" shadow="hover">
             <!-- 标题栏 -->
             <div slot="header" style="display: flex; justify-content: space-between">
                 <span style="font-size: 22px">备份数据库</span>
@@ -9,7 +9,7 @@
             </div>
             <!-- 最近备份时间 -->
             <div>
-                <span class="timeTitle">最近备份时间</span>
+                <span class="title">最近备份时间</span>
                 <span style="font-size: 14px">
                     {{ databaseInfo.lastBackupTime != null ? databaseInfo.lastBackupTime : '-' }}
                 </span>
@@ -17,7 +17,7 @@
         </el-card>
 
         <!-- 还原数据库 -->
-        <el-card class="box-card" style="margin-left: 120px">
+        <el-card class="box-card" style="margin-left: 20px" shadow="hover">
             <!-- 标题栏 -->
             <div slot="header" style="display: flex; justify-content: space-between">
                 <span style="font-size: 22px">还原数据库</span>
@@ -25,7 +25,7 @@
             </div>
             <!-- 最近还原时间 -->
             <div>
-                <span class="timeTitle">最近还原时间</span>
+                <span class="title">最近还原时间</span>
                 <span style="font-size: 14px">
                     {{ databaseInfo.lastRestoreTime != null ? databaseInfo.lastRestoreTime : '-' }}
                 </span>
@@ -105,13 +105,16 @@ export default {
 </script>
 
 <style scoped>
-.timeTitle {
+.title {
     color: #99a9bf;
     display: inline-block;
-    font-size: 16px;
-    width: 110px;
+    font-size: 18px;
+    margin-right: 15px;
 }
 .box-card {
-    width: 480px;
+    width: 100%;
+}
+.el-button {
+    width: 80px;
 }
 </style>

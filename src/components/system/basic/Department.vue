@@ -17,8 +17,8 @@
 
                 <!-- 操作按钮 -->
                 <span style="width: 450px">
-                    <el-button type="primary" size="mini" @click="dialogVisible = true, formData.parentId = data.id" style="padding: 4px">添加</el-button>
-                    <el-button type="danger" size="mini" @click="remove(data)" style="padding: 4px">删除</el-button>
+                    <el-button type="primary" size="mini" @click="dialogVisible = true, formData.parentId = data.id" style="padding: 5px">添加</el-button>
+                    <el-button type="danger" size="mini" @click="remove(data)" style="padding: 5px">删除</el-button>
                 </span>
             </span>
         </el-tree>
@@ -35,8 +35,8 @@
 
             <!-- 对话框底部按钮 -->
             <span slot="footer">
-                <el-button @click="dialogVisible = false" size="medium">取 消</el-button>
-                <el-button type="primary" @click="append" size="medium">确 定</el-button>
+                <el-button @click="dialogVisible = false" size="medium">取消</el-button>
+                <el-button type="primary" @click="append" size="medium">确定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -182,7 +182,6 @@ export default {
          * 返回true表示这个节点可以显示，返回false则表示这个节点会被隐藏
          */
         filterNode(value, data) {
-            
             if (!value) return true
             return data.name.indexOf(value) !== -1
         },

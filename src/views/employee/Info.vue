@@ -14,9 +14,9 @@
             </div>
             <div>
                 <!-- 添加员工按钮 -->
-                <el-button type="primary" @click="openDialog(null)" style="margin-left: 20px" size="medium" icon="el-icon-plus" :loading="addLoading">添加员工</el-button>
+                <el-button type="primary" @click="openDialog(null)" size="medium" icon="el-icon-plus" :loading="addLoading">添加员工</el-button>
                 <!-- 导入员工按钮 -->
-                <el-button type="primary" @click="importDialogVisible = true" style="margin-left: 20px" size="medium" :loading="uploadLoading">
+                <el-button type="primary" @click="importDialogVisible = true" size="medium" :loading="uploadLoading">
                     <i class="fa fa-download" aria-hidden="true"></i> 导入
                 </el-button>
                 <!-- 导出员工按钮 -->
@@ -387,13 +387,13 @@
 
             <!-- 对话框底部按钮 -->
             <span slot="footer">
-                <el-button @click="formDialogVisible = false" size="medium">取 消</el-button>
-                <el-button type="primary" @click="addOrEditEmployee" size="medium">确 定</el-button>
+                <el-button @click="formDialogVisible = false" size="medium">取消</el-button>
+                <el-button type="primary" @click="addOrEditEmployee" size="medium">确定</el-button>
             </span>
         </el-dialog>
 
         <!-- 高级搜索对话框 -->
-        <el-dialog title="高级搜索" :visible.sync="searchDialogVisible" width="500px" :close-on-click-modal="false">
+        <el-dialog title="高级搜索" :visible.sync="searchDialogVisible" width="500px" :close-on-click-modal="false" top="10vh">
             <!-- 员工表单 -->
             <el-form :model="searchFormData" ref="searchForm" :rules="searchRules"  status-icon label-width="96px">
                 <!-- 工号 -->
@@ -439,8 +439,8 @@
 
             <!-- 对话框底部按钮 -->
             <span slot="footer">
-                <el-button @click="searchDialogVisible = false" size="medium">取 消</el-button>
-                <el-button type="primary" @click="advancedSearch" size="medium">确 定</el-button>
+                <el-button @click="searchDialogVisible = false" size="medium">取消</el-button>
+                <el-button type="primary" @click="advancedSearch" size="medium">确定</el-button>
             </span>
         </el-dialog>
 

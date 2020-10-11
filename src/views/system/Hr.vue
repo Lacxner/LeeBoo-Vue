@@ -96,8 +96,8 @@
             </el-form>
             <!-- 对话框底部按钮 -->
             <span slot="footer">
-                <el-button @click="addDialogVisible = false" size="medium">取 消</el-button>
-                <el-button type="primary" @click="addHr" size="medium">确 定</el-button>
+                <el-button @click="addDialogVisible = false" size="medium">取消</el-button>
+                <el-button type="primary" @click="addHr" size="medium">确定</el-button>
             </span>
         </el-dialog>
 
@@ -111,8 +111,8 @@
 
             <!-- 对话框底部按钮 -->
             <span slot="footer">
-                <el-button @click="roleDialogVisible = false" size="medium">取 消</el-button>
-                <el-button type="primary" @click="updateHrRole" size="medium">确 定</el-button>
+                <el-button @click="roleDialogVisible = false" size="medium">取消</el-button>
+                <el-button type="primary" @click="updateHrRole" size="medium">确定</el-button>
             </span>
         </el-dialog>
 
@@ -160,17 +160,17 @@
 
                 <!-- 对话框底部按钮 -->
                 <span slot="footer">
-                    <el-button @click="resetPassDialogVisible = false" size="medium">取 消</el-button>
-                    <el-button type="primary" @click="resetPassword" size="medium">确 定</el-button>
+                    <el-button @click="resetPassDialogVisible = false" size="medium">取消</el-button>
+                    <el-button type="primary" @click="resetPassword" size="medium">确定</el-button>
                 </span>
             </el-dialog>
             
             <!-- 对话框底部按钮 -->
             <span slot="footer" style="display: flex; justify-content: space-between">
-                <el-button @click="resetPassDialogVisible = true" size="medium" type="warning">修改密码</el-button>
+                <el-button @click="resetPassDialogVisible = true" size="medium" type="warning" style="width: 100px">修改密码</el-button>
                 <div>
-                    <el-button @click="editDialogVisible = false" size="medium">取 消</el-button>
-                    <el-button type="primary" @click="editHr" size="medium">确 定</el-button>
+                    <el-button @click="editDialogVisible = false" size="medium">取消</el-button>
+                    <el-button type="primary" @click="editHr" size="medium">确定</el-button>
                 </div>
             </span>
         </el-dialog>

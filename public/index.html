@@ -4,11 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta http-equiv="pragma" content="no-cache"/>
-    <meta http-equiv="cache-control" content="no-cache"/>
-    <meta http-equiv="expires" content="0"/>
+    <!-- 图标 -->
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <!-- 标题 -->
+    <title>力朴人事管理系统</title>
     <!-- 引入SockJS -->
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 </head>
@@ -16,12 +15,10 @@
 <body>
     <!-- 当浏览器不支持JavaScript时的页面提示 -->
     <noscript>
-        <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
-            Please enable it to continue.</strong>
+        <strong>抱歉！力朴人事管理系统 必须依靠JavaScript的支持才能工作，请开启JavaScript后再继续。</strong>
     </noscript>
 
     <div id="app"></div>
-    <!-- built files will be auto injected -->
 </body>
 </html>
 
@@ -36,10 +33,13 @@ body{
 }
 /* 全局滚动条样式 */
 ::-webkit-scrollbar {
-  width: 12px;
+    /* 垂直滚动条 */
+    width: 14px;
+    /* 水平滚动条 */
+    height: 14px;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: #c9cacfaf;
-  border-radius: 8px;
+    background-color: #c9cacfaf;
+    border-radius: 8px;
 }
 </style>
