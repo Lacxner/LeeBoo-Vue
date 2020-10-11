@@ -120,7 +120,7 @@
         <el-dialog title="编辑操作员" :visible.sync="editDialogVisible" width="500px"
         :close-on-click-modal="false" @closed="resetEditFormData">
             <!-- 编辑Hr表单 -->
-            <el-form :model="editFormData" ref="editHrForm" :rules="editFormRules"  status-icon label-width="80px">
+            <el-form :model="editFormData" ref="editHrForm" :rules="editFormRules" status-icon label-width="80px">
                 <!-- Hr名称 -->
                 <el-form-item label="名称" prop="name" size="medium">
                     <el-input type="input" v-model="editFormData.name" autocomplete="off"></el-input>
@@ -391,13 +391,18 @@ export default {
          * 重设密码
          */
         resetPassword() {
-            // 设置要重设密码Hr的id
-            this.passwordFormData.id = this.editFormData.id
+            this.$refs.passwordForm.validate((valid) => {
+                if (valid) {
+                    // 设置要重设密码Hr的id
+                    this.passwordFormData.id = this.editFormData.id
 
-            // 重设密码
-            Hr.updateHrPasswordByAdmin(this.passwordFormData)
-            .then(response => {
-                this.resetPassDialogVisible = false
+                    Hr.updateHrPassword(this.passwordFormData)
+                    .then(response => {
+                        this.resetPassDialogVisible = false
+                    })
+                } else {
+                    return false
+                }
             })
         },
         /**

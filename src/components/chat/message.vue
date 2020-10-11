@@ -2,15 +2,15 @@
 	<div id="message" v-scroll-bottom="sessions">
 		<!-- 消息显示区域 -->
 		<ul v-if="other">
-			<li v-for="(session, index) in sessions[myself.username + '#' + other.username]" :key="index">
+			<li v-for="(session, index) in sessions[user.username + '#' + other.username]" :key="index">
 				<!-- 消息时间 -->
 				<p class="time">
 					<span>{{ session.date | time }}</span>
 				</p>
 				<!-- 头像和消息内容 -->
 				<div class="main" :class="{ self: session.self }">
-					<!-- <el-avatar shape="square" size="medium" :src="myself.avatar"></el-avatar> -->
-					<img class="avatar" :src="session.self === true ? myself.avatar : other.avatar">
+					<!-- <el-avatar shape="square" size="medium" :src="user.avatar"></el-avatar> -->
+					<img class="avatar" :src="session.self === true ? user.avatar : other.avatar">
 					<p class="text">{{ session.content }}</p>
 				</div>
 			</li>
@@ -24,7 +24,7 @@ import { mapState } from 'vuex'
 export default {
 	data () {
 		return {
-			myself: JSON.parse(localStorage.getItem('user'))
+			user: JSON.parse(localStorage.getItem('user'))
 		}
 	},
 	computed: mapState([

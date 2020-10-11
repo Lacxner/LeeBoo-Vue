@@ -152,7 +152,7 @@
                         <el-input-number v-model="formData.pensionBase" :min="0" :step="200" label="养老保险基数"></el-input-number>
                     </el-form-item>
                     <!-- 比率 -->
-                    <el-form-item label="养老保险比率" prop="pensionPer" size="medium" label-width="108px">
+                    <el-form-item label="养老保险比率" prop="pensionPer" size="medium" label-width="108px" style="margin-left: 60px">
                         <el-input-number v-model="formData.pensionPer" :min="0" :max="100" :precision="2" label="养老保险比率"></el-input-number>
                     </el-form-item>
                 </div>
@@ -163,7 +163,7 @@
                         <el-input-number v-model="formData.medicalBase" :min="0" :step="200" label="医疗保险基数"></el-input-number>
                     </el-form-item>
                     <!-- 比率 -->
-                    <el-form-item label="医疗保险比率" prop="medicalPer" size="medium" label-width="108px">
+                    <el-form-item label="医疗保险比率" prop="medicalPer" size="medium" label-width="108px" style="margin-left: 60px">
                         <el-input-number v-model="formData.medicalPer" :min="0" :max="100" :precision="2" label="医疗保险比率"></el-input-number>
                     </el-form-item>
                 </div>
@@ -174,7 +174,7 @@
                         <el-input-number v-model="formData.accumulationFundBase" :min="0" :step="200" label="公积金基数"></el-input-number>
                     </el-form-item>
                     <!-- 比率 -->
-                    <el-form-item label="公积金比率" prop="accumulationFundPer" size="medium" label-width="94px">
+                    <el-form-item label="公积金比率" prop="accumulationFundPer" size="medium" label-width="94px" style="margin-left: 60px">
                         <el-input-number v-model="formData.accumulationFundPer" :min="0" :max="100" :precision="2" label="公积金比率"></el-input-number>
                     </el-form-item>
                 </div>

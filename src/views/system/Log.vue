@@ -1,13 +1,15 @@
 <template>
     <div>
         <!-- 顶部 -->
-        <el-input placeholder="请输入操作员用户名" v-model="username" clearable style="width: 400px; text-align: center" size="medium"></el-input>
-        <!-- 查找按钮 -->
-        <el-button type="primary" @click="search()" style="margin-left: 20px" size="medium" icon="el-icon-search">查找</el-button>
+        <div>
+            <el-input placeholder="请输入操作员用户名" v-model="username" clearable style="width: 400px; text-align: center" size="medium"></el-input>
+            <!-- 查找按钮 -->
+            <el-button type="primary" @click="search" style="margin-left: 20px" size="medium" icon="el-icon-search">查找</el-button>
+        </div>
 
         <!-- 中间部分 -->
         <!-- 系统日志列表 -->
-        <el-table :data="tableData" ref="systemLogTable" max-height="460" fit v-loading="tableLoading" element-loading-text="加载中" style="margin: 20px 0px" :default-sort="defaultSort">
+        <el-table :data="tableData" ref="logTable" max-height="460" fit v-loading="tableLoading" element-loading-text="加载中" style="margin: 20px 0px" :default-sort="defaultSort">
             <!-- 序号 -->
             <el-table-column :resizable="false" header-align="center" align="center" prop="id" label="序号" width="80">
                 <template slot-scope="scope">
@@ -54,7 +56,7 @@
 </template>
 
 <script>
-import * as SystemLog from '@/api/systemLog'
+import * as Log from '@/api/log'
 import * as Message from '@/utils/message'
 
 export default {
@@ -72,6 +74,7 @@ export default {
             pageSize: 64,
             // 总日志数
             total: 0,
+            // 日志表格的排序策略
             defaultSort: {
                 prop: 'visitTime',
                 order: 'descending'
@@ -81,7 +84,7 @@ export default {
         }
     },
     created() {
-        this.refreshAllSystemLogs()
+        this.refreshAllLogs()
     },
     computed: {
         changeTagType(pattern) {
@@ -103,9 +106,9 @@ export default {
         /**
          * 获取所有系统日志
          */
-        refreshAllSystemLogs(res) {
+        refreshAllLogs(res) {
             // 获取所有系统日志
-            SystemLog.getAllSystemLogs(this.username, this.currentPage, this.pageSize)
+            Log.getAllLogs(this.username, this.currentPage, this.pageSize)
             .then(response => {
                 this.tableData = response.data.items
                 // 日志总数
@@ -118,9 +121,9 @@ export default {
          * 查找按钮的点击事件
          */
         search() {
-            this.username = this.username == '' ? null : this.username
+            this.username = this.username === '' ? null : this.username
             this.tableLoading = true
-            this.refreshAllSystemLogs()
+            this.refreshAllLogs()
         },
         /**
          * 清空所有日志
@@ -135,9 +138,9 @@ export default {
                     this.deleteAllLoading = true
                     this.tableLoading = true
                     
-                    SystemLog.deleteAllSystemLogs()
+                    Log.deleteAllLogs()
                     .then(response => {
-                        this.refreshAllSystemLogs(response)
+                        this.refreshAllLogs(response)
                         this.deleteAllLoading = false
                     })
             }).catch(action => {})
@@ -147,7 +150,7 @@ export default {
          */
         handleCurrentChange() {
             this.tableLoading = true
-            this.refreshAllSystemLogs()
+            this.refreshAllLogs()
         },
         /**
          * 切换每页显示数时的点击事件
@@ -155,7 +158,7 @@ export default {
         handleSizeChange(val) {
             this.pageSize = val
             this.tableLoading = true
-            this.refreshAllSystemLogs()
+            this.refreshAllLogs()
         },
         /**
          * 访问方法的方式的筛选

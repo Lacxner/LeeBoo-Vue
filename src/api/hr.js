@@ -10,6 +10,14 @@ export function getAllHrs() {
     })
 }
 
+export function getMyself() {
+    return Axios({
+        method: 'get',
+        baseURL: BASE_URL,
+        url: '/getMyself'
+    })
+}
+
 export function getAllRoles() {
     return Axios({
         method: 'get',
@@ -41,15 +49,15 @@ export function updateHr(hr) {
         method: 'put',
         baseURL: BASE_URL,
         url: '/updateHr',
-        data: hr 
+        data: hr
     })
 }
 
-export function updateHrPasswordByAdmin(resetPassword) {
+export function updateHrPassword(resetPassword) {
     return Axios({
         method: 'put',
         baseURL: BASE_URL,
-        url: '/updateHrPasswordByAdmin',
+        url: '/updateHrPassword',
         data: resetPassword
     })
 }
@@ -59,6 +67,15 @@ export function updateHrEnabled(basicHr) {
         method: 'put',
         baseURL: BASE_URL,
         url: '/updateHrEnabled',
+        data: basicHr
+    })
+}
+
+export function updateHrAvatar(basicHr) {
+    return Axios({
+        method: 'put',
+        baseURL: BASE_URL,
+        url: '/updateHrAvatar',
         data: basicHr
     })
 }

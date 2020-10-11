@@ -29,7 +29,7 @@ import Authority from '@/components/system/basic/Authority.vue'
 export default {
     data() {
         return {
-            activeName: 'rank'
+            activeName: 'department'
         }
     },
     // 这里每个导航页面是以组件的形式注册进来的

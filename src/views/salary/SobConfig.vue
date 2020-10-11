@@ -1,16 +1,15 @@
 <template>
     <div>
         <!-- 顶部 -->
-        <el-input placeholder="请输入关键字" v-model="search" clearable style="width: 500px; text-align: center" size="medium">
-            <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input>
+        <div>
+            <el-input placeholder="请输入员工姓名" v-model="name" clearable style="width: 400px; text-align: center" size="medium"></el-input>
+            <!-- 查找按钮 -->
+            <el-button type="primary" @click="search" style="margin-left: 20px" size="medium" icon="el-icon-search">查找</el-button>
+        </div>
 
         <!-- 中间部分 -->
         <!-- 工资账套列表 -->
-        <el-table :data="tableData.filter(data => !search 
-            || data.name.toLowerCase().includes(search.toLowerCase())
-            || data.department.name.toLowerCase().includes(search.toLowerCase()))"
-        ref="employeeSalaryTable" max-height="920" fit v-loading="tableLoading" element-loading-text="加载中" style="margin: 20px 0px">
+        <el-table :data="tableData" ref="employeeSalaryTable" max-height="920" fit v-loading="tableLoading" element-loading-text="加载中" style="margin: 20px 0px">
             <!-- 序号 -->
             <el-table-column :resizable="false" header-align="center" align="center" prop="id" label="序号" width="100">
                 <template slot-scope="scope">
@@ -30,11 +29,11 @@
             <!-- 账套 -->
             <el-table-column :resizable="false" show-overflow-tooltip header-align="center" align="center" prop="salary.name" label="账套">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="dark" placement="right" :open-delay="500">
+                    <el-tooltip class="item" effect="dark" placement="right" :open-delay="250" v-if="scope.row.salary">
                         <!-- 账套名称 -->
                         <el-tag size="medium">{{ scope.row.salary.name }}</el-tag>
                         <!-- 账套详细信息 -->
-                        <div slot="content" style="z-index: 999">
+                        <div slot="content">
                             <table>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">基础工资</el-tag>
@@ -83,6 +82,7 @@
                             </table>
                         </div>
                     </el-tooltip>
+                    <el-tag size="medium" type="danger" v-else>{{ '暂未设置' }}</el-tag>
                 </template>
             </el-table-column>
             <!-- 操作 -->
@@ -100,7 +100,7 @@
             <!-- 工资账套表单 -->
             <el-form :model="formData" ref="employeeSalaryForm" :rules="formRules" status-icon>
                 <!-- 账套名称 -->
-                <el-form-item label="账套名称" prop="name" size="medium" label-width="80px">
+                <el-form-item label="账套名称" prop="id" size="medium" label-width="80px">
                     <el-select v-model="formData.id" placeholder="请选择">
                         <el-option v-for="salary in allSalary" :key="salary.id" :label="salary.name" :value="salary.id"></el-option>
                     </el-select>
@@ -110,7 +110,7 @@
             <!-- 对话框底部按钮 -->
             <span slot="footer">
                 <el-button @click="dialogVisible = false" size="medium">取消</el-button>
-                <el-button type="primary" @click="editEmployeeSalary" size="medium">确定</el-button>
+                <el-button type="primary" @click="addOrEditEmployeeSalary" size="medium">确定</el-button>
             </span>
         </el-dialog>
 
@@ -132,8 +132,10 @@ export default {
         return {
             // 表格加载中提示
             tableLoading: true,
-            // 搜索内容
-            search: '',
+            // 搜索的员工姓名
+            name: null,
+            // 判断是添加还是编辑
+            isEdit: true,
             // 当前页码
             currentPage: 1,
             // 每页显示数
@@ -148,7 +150,7 @@ export default {
             },
             // 校验规则
             formRules: {
-                name: [
+                id: [
                     { required: true, message: '请选择工资账套！', trigger: 'blur' }
                 ]
             },
@@ -170,7 +172,7 @@ export default {
          */
         refreshAllEmployeeSalary(res) {
             // 获取所有工资账套
-            Salary.getAllEmployeeSalary(this.currentPage, this.pageSize)
+            Salary.getAllEmployeeSalaryByName(this.name, this.currentPage, this.pageSize)
             .then(response => {
                 this.tableData = response.data.items
                 // 员工总数
@@ -178,6 +180,14 @@ export default {
                 Message.handle(res)
                 this.tableLoading = false
             })
+        },
+        /**
+         * 搜索按钮的点击事件
+         */
+        search() {
+            this.name = this.name === '' ? null : this.name
+            this.tableLoading = true
+            this.refreshAllEmployeeSalary()
         },
         /**
          * 初始化工账套下拉框
@@ -210,7 +220,12 @@ export default {
         openDialog(currentEmployeeSalary) {
             // 数据回显
             this.$nextTick(() => {
-                this.formData.id = currentEmployeeSalary.salary.id
+                if (currentEmployeeSalary.salary) {
+                    this.formData.id = currentEmployeeSalary.salary.id
+                    this.isEdit = true
+                } else {
+                    this.isEdit = false
+                }
                 this.employeeId = currentEmployeeSalary.id
             })
             this.dialogVisible = true
@@ -218,14 +233,26 @@ export default {
         /**
          * 编辑工资账套
          */
-        editEmployeeSalary() {
-            // 点击了确定后立马关闭对话框并开启加载中提示，提高用户体验
-            this.dialogVisible = false
-            this.tableLoading = true
+        addOrEditEmployeeSalary() {
+            this.$refs.employeeSalaryForm.validate((valid) => {
+                if (valid) {
+                    this.dialogVisible = false
+                    this.tableLoading = true
 
-            Salary.updateEmployeeSalary(this.formData.id, this.employeeId)
-            .then(response => {
-                this.refreshAllEmployeeSalary(response)
+                    if (this.isEdit) {
+                        Salary.updateEmployeeSalary(this.formData.id, this.employeeId)
+                        .then(response => {
+                            this.refreshAllEmployeeSalary(response)
+                        })
+                    } else {
+                        Salary.addEmployeeSalary(this.formData.id, this.employeeId)
+                        .then(response => {
+                            this.refreshAllEmployeeSalary(response)
+                        })
+                    }
+                } else {
+                    return false
+                }
             })
         },
         /**

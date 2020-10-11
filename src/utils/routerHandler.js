@@ -37,9 +37,9 @@ function formatRoutes(routes){
     let finalRoutes = routes.filter(route => {
         // 根据不同的情况动态对component属性赋值
         if (route.component) {
-            if (route.component == 'Layout') {// 处理一级菜单的component属性，即均为Layout
+            if (route.component === 'Layout') { // 处理一级菜单的component属性，即均为Layout
                 route.component = Layout
-            } else {// 处理二级菜单的component属性，需要实现动态导入组件
+            } else { // 处理二级菜单的component属性，需要实现动态导入组件
                 const component = route.component
                 route.component = (resolve) => {
                     require(['@/views' + component + '.vue'], resolve)

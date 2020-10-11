@@ -2,11 +2,11 @@ import Axios from '@/utils/interceptor'
 
 const BASE_URL = '/system/log'
 
-export function getAllSystemLogs(username, currentPage, pageSize) {
+export function getAllLogs(username, currentPage, pageSize) {
     return Axios({
         method: 'get',
         baseURL: BASE_URL,
-        url: `/getAllSystemLogs/${username}/${currentPage}/${pageSize}`,
+        url: `/getAllLogs/${username}/${currentPage}/${pageSize}`,
         params: {
             username,
             currentPage,
@@ -15,19 +15,19 @@ export function getAllSystemLogs(username, currentPage, pageSize) {
     })
 }
 
-export function addSystemLog(systemLog) {
+export function addLog(log) {
     return Axios({
         method: 'post',
         baseURL: BASE_URL,
-        url: '/addSystemLog',
-        data: systemLog
+        url: '/addLog',
+        data: log
     })
 }
 
-export function deleteAllSystemLogs() {
+export function deleteAllLogs() {
     return Axios({
         method: 'delete',
         baseURL: BASE_URL,
-        url: 'deleteAllSystemLogs'
+        url: '/deleteAllLogs'
     })
 }

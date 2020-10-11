@@ -9,8 +9,7 @@
 
         <!-- 中间部分 -->
         <!-- 职称列表 -->
-        <el-table :data="tableData.filter(data => !search 
-            || data.name.toLowerCase().includes(search.toLowerCase()))"
+        <el-table :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
         ref="rankTable" max-height="460" fit @selection-change="handleSelectionChange"
         v-loading="tableLoading" element-loading-text="加载中">
             <!-- 勾选框 -->
@@ -53,7 +52,7 @@
         <!-- 添加或编辑职称对话框 -->
         <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="500px" :close-on-click-modal="false" @closed="resetFormData">
             <!-- 职称表单 -->
-            <el-form :model="formData" ref="rankForm" :rules="formRules"  status-icon label-width="52px">
+            <el-form :model="formData" ref="rankForm" :rules="formRules" status-icon label-width="52px">
                 <!-- 职称名称 -->
                 <el-form-item label="名称" prop="name" size="medium">
                     <el-input type="input" v-model="formData.name" autocomplete="off"></el-input>
@@ -189,9 +188,9 @@ export default {
         addOrEditRank() {
             this.$refs.rankForm.validate((valid) => {
                 if (valid) {
-                    // 点击了确定后立马关闭对话框并开启加载中提示，提高用户体验
                     this.dialogVisible = false
                     this.tableLoading = true
+                    
                     // 如果当前表单数据的id属性有值就代表要修改，反之就表示添加
                     if (this.formData.id) {
                         // 修改职称

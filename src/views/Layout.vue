@@ -17,7 +17,7 @@
                 <el-dropdown @command="handleCommand">
                     <span class="el-dropdown-link">
                         <!-- 用户头像 -->
-                        <el-avatar :src="user.avatar" style="margin-right: 8px" v-if="user"/>
+                        <el-avatar shape="square" :src="user.avatar" style="margin-right: 8px" v-if="user"/>
                         <!-- 用户名称 -->
                         {{ user != null ? user.name : '未登录' }}
                         <i class="el-icon-arrow-down el-icon--right"/>
@@ -29,7 +29,7 @@
                         <el-dropdown-item divided command="logout" style="font-size: 14px" v-if="user">
                             <i class="fa fa-sign-out"></i> 注销登录
                         </el-dropdown-item>
-                        <el-dropdown-item command="login"  style="font-size: 14px" v-if="!user">
+                        <el-dropdown-item command="login"  style="font-size: 14px" v-else>
                             <i class="fa fa-sign-out"></i> 前往登录
                         </el-dropdown-item>
                     </el-dropdown-menu>
@@ -121,7 +121,8 @@ export default {
             // 菜单栏是否折叠
             isCollapse: false,
             // 登录信息
-            user: null,
+            // user: null,
+            // 是否打开聊天对话框
             chatDialogVisible: false
         }
     },
@@ -134,11 +135,14 @@ export default {
         },
         ...mapState([
             'badge'
-        ])
+        ]),
+        user() {
+            return this.$store.state.user
+        }
     },
     created() {
         // 获取Hr登录状态信息
-        this.user = JSON.parse(localStorage.getItem('user')) 
+        this.$store.commit('changeUser', JSON.parse(localStorage.getItem('user')))
         if (this.user) {
             // 初始化未读消息标记
             this.$store.dispatch('initBadge')
@@ -163,7 +167,7 @@ export default {
          */
         handleCommand(command) {
             if (command == 'center') {
-                
+                this.$router.push({ path: '/personalCenter' }, onComplete => {}, onAbort => {})
             } else if (command == 'logout') {
                 // 再次确认注销登录
                 this.$confirm('是否确定要注销登录?', '提示', {

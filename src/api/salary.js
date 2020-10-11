@@ -2,8 +2,9 @@ import Axios from '@/utils/interceptor'
 
 const BASE_URL_SET_OF_BOOKS = '/salary/setOfBooks'
 const BASE_URL_SET_OF_BOOKS_CONFIG = '/salary/setOfBooksConfig'
+const BASE_URL_SEARCH = '/salary/search'
 
-/* =============== setOfBooks =============== */
+/* =============== SetOfBooks =============== */
 
 export function getAllSalary() {
     return Axios({
@@ -44,19 +45,20 @@ export function deleteBatchSalaryByIds(ids) {
     return Axios({
         method: 'delete',
         baseURL: BASE_URL_SET_OF_BOOKS,
-        url: 'deleteBatchSalaryByIds',
+        url: '/deleteBatchSalaryByIds',
         data: ids
     })
 }
 
-/* =============== setOfBooksConfig =============== */
+/* =============== SetOfBooksConfig =============== */
 
-export function getAllEmployeeSalary(currentPage, pageSize) {
+export function getAllEmployeeSalaryByName(name, currentPage, pageSize) {
     return Axios({
         method: 'get',
         baseURL: BASE_URL_SET_OF_BOOKS_CONFIG,
-        url: `/getAllEmployeeSalary/${currentPage}/${pageSize}`,
+        url: `/getAllEmployeeSalaryByName/${name}/${currentPage}/${pageSize}`,
         params: {
+            name,
             currentPage,
             pageSize
         }
@@ -67,7 +69,7 @@ export function getAllBasicSalary() {
     return Axios({
         mthod: 'get',
         baseURL: BASE_URL_SET_OF_BOOKS_CONFIG,
-        url: 'getAllBasicSalary'
+        url: '/getAllBasicSalary'
     })
 }
 
@@ -75,10 +77,33 @@ export function updateEmployeeSalary(salaryId, employeeId) {
     return Axios({
         method: 'put',
         baseURL: BASE_URL_SET_OF_BOOKS_CONFIG,
-        url: `updateEmployeeSalary/${salaryId}/${employeeId}`,
+        url: `/updateEmployeeSalary/${salaryId}/${employeeId}`,
         params: {
             salaryId,
             employeeId
         }
+    })
+}
+
+export function addEmployeeSalary(salaryId, employeeId) {
+    return Axios({
+        method: 'post',
+        baseURL: BASE_URL_SET_OF_BOOKS_CONFIG,
+        url: `/addEmployeeSalary/${salaryId}/${employeeId}`,
+        params: {
+            salaryId,
+            employeeId
+        }
+    })
+}
+
+/* =============== Search =============== */
+
+export function getSalaryByName(name) {
+    return Axios({
+        method: 'get',
+        baseURL: BASE_URL_SEARCH,
+        url: `/getSalaryByName/${name}`,
+        params: name
     })
 }

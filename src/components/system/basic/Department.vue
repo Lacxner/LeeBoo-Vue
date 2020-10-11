@@ -26,7 +26,7 @@
         <!-- 添加部门对话框 -->
         <el-dialog title="添加部门" :visible.sync="dialogVisible" width="500px" :close-on-click-modal="false" @closed="resetFormData">
             <!-- 添加部门表单 -->
-            <el-form :model="formData" ref="departmentForm" :rules="formRules"  status-icon label-width="52px">
+            <el-form :model="formData" ref="departmentForm" :rules="formRules" status-icon label-width="52px">
                 <!-- 部门名称 -->
                 <el-form-item label="名称" prop="name" size="medium">
                     <el-input type="input" v-model="formData.name" autocomplete="off"></el-input>

@@ -21,15 +21,27 @@ const routes = [
     },
     {
         path: '/login',
-        name: 'Login',
+        name: '登录页',
         component: () => import('@/views/Login.vue'),
-        hidden: true// 菜单栏动态生成时会根据该属性判断是否遍历生成
+        hidden: true // 菜单栏动态生成时会根据该属性判断是否遍历生成
+    },
+    {
+        path: '/center',
+        component: Layout,
+        children: [
+            {
+                path: '/personalCenter',
+                name: '个人中心',
+                component: () => import('@/views/PersonalCenter.vue')
+            }
+        ],
+        hidden: true
     }
 ]
 
 export const page404 = {
     path: '*',
-    name: 'Page404',
+    name: '404错误页面',
     component: () => import('@/views/404.vue'),
     hidden: true
 }

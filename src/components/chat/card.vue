@@ -2,9 +2,9 @@
   <div id="card">
   	<header>
 		<!-- 头像 -->
-		<el-avatar shape="square" size="large" :src="myself.avatar"></el-avatar>
+		<el-avatar shape="square" size="large" :src="user.avatar"></el-avatar>
 		<!-- 用户名 -->
-		<p class="name">{{ myself.name }}</p>
+		<p class="name">{{ user.name }}</p>
   	</header>
   	<footer>
   		<span style="font-size: 18px">所有操作员</span>
@@ -16,7 +16,7 @@
 export default {
 	data () {
 		return {
-			myself: JSON.parse(localStorage.getItem('user'))
+			user: JSON.parse(localStorage.getItem('user'))
 		}
 	},
 	created() {

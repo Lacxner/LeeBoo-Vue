@@ -107,7 +107,7 @@ export default {
                         Message.handle(response)
                         // 通过响应状态码来判断登录成功与否
                         if (response.code === 200) {
-                            this.$store.commit('initMyself', response.data.item)
+                            this.$store.commit('changeUser', response.data.item)
                             // 登录后存储登录信息
                             localStorage.setItem('user', JSON.stringify(response.data.item))
                             this.$router.replace({ path: '/welcome' })

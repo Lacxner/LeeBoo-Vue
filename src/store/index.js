@@ -28,8 +28,8 @@ const store = new Vuex.Store({
         sessions: {},
         // 除自己以外的所有Hr
         hrs: [],
-        // 我自己
-        myself: JSON.parse(localStorage.getItem("user")),
+        // 当前登录用户（我自己）
+        user: JSON.parse(localStorage.getItem("user")),
         // 当前正在进行聊天的Hr（对方）
         other: null,
         // 未读消息数
@@ -40,6 +40,12 @@ const store = new Vuex.Store({
         stomp: null
     },
     mutations: {
+        /**
+         * 修改当前用户
+         */
+        changeUser(state, user) {
+            state.user = user
+        },
         /**
          * 初始化当前用户路由
          */
@@ -58,18 +64,15 @@ const store = new Vuex.Store({
 		addMessage(state, message) {
             state.uncheckedMessageCounts++
             // 在sessions中初始化某个会话的消息数组
-            if (!state.sessions[state.myself.username + '#' + message.to]) {
-                Vue.set(state.sessions, state.myself.username + '#' + message.to, [])
+            if (!state.sessions[state.user.username + '#' + message.to]) {
+                Vue.set(state.sessions, state.user.username + '#' + message.to, [])
             }
             // 添加消息信息至sessions的指定数组中
-			state.sessions[state.myself.username + '#' + message.to].push({
+			state.sessions[state.user.username + '#' + message.to].push({
 				content: message.content,
 				date: new Date(),
 				self: !message.notSelf
             })
-        },
-        initMyself(state, data) {
-            state.myself = data
         },
         /**
          * 初始化历史聊天消息，历史聊天消息均存在本地
@@ -89,8 +92,11 @@ const store = new Vuex.Store({
                 state.other = state.hrs[0]
             }
         },
+        /**
+         * 清除未读消息标记
+         */
         clearBadeg(state) {
-            state.badge[state.myself.username] = 0
+            state.badge[state.user.username] = 0
         }
     },
     actions: {
@@ -117,7 +123,7 @@ const store = new Vuex.Store({
                         })
                     }
                     // 每接收一条消息就将未读消息标记加一
-                    context.state.badge[context.state.myself.username]++
+                    context.state.badge[context.state.user.username]++
 
                     receiveMessage.notSelf = true
                     receiveMessage.to = receiveMessage.from
@@ -148,8 +154,8 @@ const store = new Vuex.Store({
 				context.state.badge = JSON.parse(data)
             }
 
-            if (!context.state.badge[context.state.myself.username]) {
-                Vue.set(context.state.badge, context.state.myself.username, 0)
+            if (!context.state.badge[context.state.user.username]) {
+                Vue.set(context.state.badge, context.state.user.username, 0)
             }
         }
     }

@@ -44,7 +44,7 @@
         <!-- 添加或编辑职位对话框 -->
         <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="500px" :close-on-click-modal="false" @closed="resetFormData">
             <!-- 职位表单 -->
-            <el-form :model="formData" ref="positionForm" :rules="formRules"  status-icon label-width="52px">
+            <el-form :model="formData" ref="positionForm" :rules="formRules" status-icon label-width="52px">
                 <!-- 职位名称 -->
                 <el-form-item label="名称" prop="name" size="medium">
                     <el-input type="input" v-model="formData.name" autocomplete="off"></el-input>
