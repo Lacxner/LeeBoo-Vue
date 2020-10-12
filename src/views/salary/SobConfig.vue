@@ -4,12 +4,12 @@
         <div>
             <el-input placeholder="请输入员工姓名" v-model="name" clearable style="width: 400px; text-align: center" size="medium"></el-input>
             <!-- 查找按钮 -->
-            <el-button type="primary" @click="search" style="margin-left: 20px" size="medium" icon="el-icon-search">查找</el-button>
+            <el-button type="primary" @click="search" style="margin-left: 20px" size="medium" icon="el-icon-search" :loading="searching">查找</el-button>
         </div>
 
         <!-- 中间部分 -->
         <!-- 工资账套列表 -->
-        <el-table :data="tableData" ref="employeeSalaryTable" max-height="920" fit v-loading="tableLoading" element-loading-text="加载中" style="margin: 20px 0px">
+        <el-table :data="tableData" ref="employeeSalarySobTable" max-height="920" fit v-loading="tableLoading" element-loading-text="加载中" style="margin: 20px 0px">
             <!-- 序号 -->
             <el-table-column :resizable="false" header-align="center" align="center" prop="id" label="序号" width="100">
                 <template slot-scope="scope">
@@ -27,57 +27,57 @@
             <!-- 部门 -->
             <el-table-column :resizable="false" show-overflow-tooltip header-align="center" align="center" prop="department.name" label="部门" width="140"></el-table-column>
             <!-- 账套 -->
-            <el-table-column :resizable="false" show-overflow-tooltip header-align="center" align="center" prop="salary.name" label="账套">
+            <el-table-column :resizable="false" show-overflow-tooltip header-align="center" align="center" prop="salarySob.name" label="账套">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="dark" placement="right" :open-delay="250" v-if="scope.row.salary">
+                    <el-tooltip class="item" effect="dark" placement="right" :open-delay="250" v-if="scope.row.salarySob">
                         <!-- 账套名称 -->
-                        <el-tag size="medium">{{ scope.row.salary.name }}</el-tag>
+                        <el-tag size="medium">{{ scope.row.salarySob.name }}</el-tag>
                         <!-- 账套详细信息 -->
                         <div slot="content">
                             <table>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">基础工资</el-tag>
-                                    <td>￥{{ scope.row.salary.basicSalary }}</td>
+                                    <td>￥{{ scope.row.salarySob.basicSalarySob }}</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">奖金</el-tag>
-                                    <td>￥{{ scope.row.salary.bonus }}</td>
+                                    <td>￥{{ scope.row.salarySob.reward }}</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">午餐补助</el-tag>
-                                    <td>￥{{ scope.row.salary.lunchSalary }}</td>
+                                    <td>￥{{ scope.row.salarySob.lunchSalarySob }}</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">交通补助</el-tag>
-                                    <td>￥{{ scope.row.salary.trafficSalary }}</td>
+                                    <td>￥{{ scope.row.salarySob.trafficSalarySob }}</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">应发工资</el-tag>
-                                    <td>￥{{ scope.row.salary.allSalary }}</td>
+                                    <td>￥{{ scope.row.salarySob.allSalarySob }}</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">养老保险基数</el-tag>
-                                    <td>￥{{ scope.row.salary.pensionBase }}</td>
+                                    <td>￥{{ scope.row.salarySob.pensionBase }}</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">养老保险比率</el-tag>
-                                    <td>{{ scope.row.salary.pensionPer }}%</td>
+                                    <td>{{ scope.row.salarySob.pensionPer }}%</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">医疗保险基数</el-tag>
-                                    <td>￥{{ scope.row.salary.medicalBase }}</td>
+                                    <td>￥{{ scope.row.salarySob.medicalBase }}</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">医疗保险比率</el-tag>
-                                    <td>{{ scope.row.salary.medicalPer }}%</td>
+                                    <td>{{ scope.row.salarySob.medicalPer }}%</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">公积金基数</el-tag>
-                                    <td>￥{{ scope.row.salary.accumulationFundBase }}</td>
+                                    <td>￥{{ scope.row.salarySob.accumulationFundBase }}</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">公积金比率</el-tag>
-                                    <td>{{ scope.row.salary.accumulationFundPer }}%</td>
+                                    <td>{{ scope.row.salarySob.accumulationFundPer }}%</td>
                                 </tr>
                             </table>
                         </div>
@@ -98,11 +98,11 @@
         <!-- 添加或编辑工资账套对话框 -->
         <el-dialog title="修改工资账套" :visible.sync="dialogVisible" width="500px" :close-on-click-modal="false" @close="resetFormData">
             <!-- 工资账套表单 -->
-            <el-form :model="formData" ref="employeeSalaryForm" :rules="formRules" status-icon>
+            <el-form :model="formData" ref="employeeSalarySobForm" :rules="formRules" status-icon>
                 <!-- 账套名称 -->
                 <el-form-item label="账套名称" prop="id" size="medium" label-width="80px">
                     <el-select v-model="formData.id" placeholder="请选择">
-                        <el-option v-for="salary in allSalary" :key="salary.id" :label="salary.name" :value="salary.id"></el-option>
+                        <el-option v-for="salarySob in allSalarySob" :key="salarySob.id" :label="salarySob.name" :value="salarySob.id"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -110,7 +110,7 @@
             <!-- 对话框底部按钮 -->
             <span slot="footer">
                 <el-button @click="dialogVisible = false" size="medium">取消</el-button>
-                <el-button type="primary" @click="addOrEditEmployeeSalary" size="medium">确定</el-button>
+                <el-button type="primary" @click="addOrEditEmployeeSalarySob" size="medium">确定</el-button>
             </span>
         </el-dialog>
 
@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import * as Salary from '@/api/salary'
+import * as SalarySob from '@/api/salarySob'
 import * as Message from '@/utils/message'
 
 export default {
@@ -132,6 +132,8 @@ export default {
         return {
             // 表格加载中提示
             tableLoading: true,
+            // 查找中提示
+            searching: false,
             // 搜索的员工姓名
             name: null,
             // 判断是添加还是编辑
@@ -155,7 +157,7 @@ export default {
                 ]
             },
             // 所有可选择的工资账套
-            allSalary: [],
+            allSalarySob: [],
             // 是否打开对话框
             dialogVisible: false,
             // 表格数据
@@ -163,22 +165,23 @@ export default {
         }
     },
     created() {
-        this.refreshAllEmployeeSalary()
-        this.initSalary()
+        this.refreshAllEmployeeSalarySob()
+        this.initSalarySob()
     },
     methods: {
         /**
          * 获取所有工资账套
          */
-        refreshAllEmployeeSalary(res) {
+        refreshAllEmployeeSalarySob(res) {
             // 获取所有工资账套
-            Salary.getAllEmployeeSalaryByName(this.name, this.currentPage, this.pageSize)
+            SalarySob.getAllEmployeeSalarySobByName(this.name, this.currentPage, this.pageSize)
             .then(response => {
                 this.tableData = response.data.items
                 // 员工总数
                 this.total = response.data.total
                 Message.handle(res)
                 this.tableLoading = false
+                this.searching = false
             })
         },
         /**
@@ -187,15 +190,16 @@ export default {
         search() {
             this.name = this.name === '' ? null : this.name
             this.tableLoading = true
-            this.refreshAllEmployeeSalary()
+            this.searching = true
+            this.refreshAllEmployeeSalarySob()
         },
         /**
          * 初始化工账套下拉框
          */
-        initSalary() {
-            Salary.getAllBasicSalary()
+        initSalarySob() {
+            SalarySob.getAllBasicSalarySob()
             .then(response => {
-                this.allSalary = response.data.items
+                this.allSalarySob = response.data.items
             })
         },
         /**
@@ -203,7 +207,7 @@ export default {
          */
         handleCurrentChange() {
             this.tableLoading = true
-            this.refreshAllEmployeeSalary()
+            this.refreshAllEmployeeSalarySob()
         },
         /**
          * 切换每页显示数时的点击事件
@@ -211,43 +215,43 @@ export default {
         handleSizeChange(val) {
             this.pageSize = val
             this.tableLoading = true
-            this.refreshAllEmployeeSalary()
+            this.refreshAllEmployeeSalarySob()
         },
         /**
          * 点击添加或编辑按钮时打开对话框，对话框会动态适应
          * 如果是修改操作就传入当前要编辑的工资账套，反之添加就传入null
          */
-        openDialog(currentEmployeeSalary) {
+        openDialog(currentEmployeeSalarySob) {
             // 数据回显
             this.$nextTick(() => {
-                if (currentEmployeeSalary.salary) {
-                    this.formData.id = currentEmployeeSalary.salary.id
+                if (currentEmployeeSalarySob.salarySob) {
+                    this.formData.id = currentEmployeeSalarySob.salarySob.id
                     this.isEdit = true
                 } else {
                     this.isEdit = false
                 }
-                this.employeeId = currentEmployeeSalary.id
+                this.employeeId = currentEmployeeSalarySob.id
             })
             this.dialogVisible = true
         },
         /**
          * 编辑工资账套
          */
-        addOrEditEmployeeSalary() {
-            this.$refs.employeeSalaryForm.validate((valid) => {
+        addOrEditEmployeeSalarySob() {
+            this.$refs.employeeSalarySobForm.validate((valid) => {
                 if (valid) {
                     this.dialogVisible = false
                     this.tableLoading = true
 
                     if (this.isEdit) {
-                        Salary.updateEmployeeSalary(this.formData.id, this.employeeId)
+                        SalarySob.updateEmployeeSalarySob(this.formData.id, this.employeeId)
                         .then(response => {
-                            this.refreshAllEmployeeSalary(response)
+                            this.refreshAllEmployeeSalarySob(response)
                         })
                     } else {
-                        Salary.addEmployeeSalary(this.formData.id, this.employeeId)
+                        SalarySob.addEmployeeSalarySob(this.formData.id, this.employeeId)
                         .then(response => {
-                            this.refreshAllEmployeeSalary(response)
+                            this.refreshAllEmployeeSalarySob(response)
                         })
                     }
                 } else {
@@ -259,7 +263,7 @@ export default {
          * 重置表单并清除校验结果
          */
         resetFormData() {
-            this.$refs.employeeSalaryForm.resetFields()
+            this.$refs.employeeSalarySobForm.resetFields()
         }
     }
 }

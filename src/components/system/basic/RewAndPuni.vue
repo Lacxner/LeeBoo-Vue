@@ -24,14 +24,14 @@
 			</div>
 		</el-card>
 
-		<!-- 惩罚列表 -->
+		<!-- 处罚列表 -->
 		<el-card class="box-card" style="margin-left: 20px" shadow="hover">
 			<!-- 标题栏 -->
 			<div slot="header" style="display: flex; justify-content: space-between">
-				<span style="font-size: 22px">惩罚</span>
+				<span style="font-size: 22px">处罚</span>
 				<el-button type="primary" size="small" @click="openDialog(false)" style="width: 80px">添加</el-button>
 			</div>
-			<!-- 遍历所有惩罚 -->
+			<!-- 遍历所有处罚 -->
 			<div v-if="punishments.length">
 				<div v-for="punishment in punishments" :key="punishment.id" class="item" style="display: flex; justify-content: space-between">
 					<div>
@@ -48,7 +48,7 @@
 			</div>
 		</el-card>
 
-		<!-- 添加奖励或惩罚对话框 -->
+		<!-- 添加奖励或处罚对话框 -->
 		<el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="500px" :close-on-click-modal="false" @closed="resetFormData">
 			<!-- 表单 -->
 			<el-form :model="formData" ref="rewAndPuniForm" :rules="formRules" status-icon label-width="52px">
@@ -82,7 +82,7 @@ export default {
 			dialogTitle: '添加奖励',
 			// 是否打开对话框
 			dialogVisible: false,
-            // 添加奖励或惩罚的表单数据
+            // 添加奖励或处罚的表单数据
             formData: {
                 name: null,
                 money: 0
@@ -102,9 +102,9 @@ export default {
 			loading: false,
 			// 所有奖励
 			rewards: [],
-			// 所有惩罚
+			// 所有处罚
 			punishments: [],
-			// 判断当前添加的是奖励还是惩罚
+			// 判断当前添加的是奖励还是处罚
 			isAddReward: true
         }	
     },
@@ -118,7 +118,7 @@ export default {
     },
     methods: {
 		/**
-         * 获取所有的惩罚
+         * 获取所有的处罚
          */
         refreshAllRewardsAndPunishments(res) {
 			RewAndPuni.getAllRewardsAndPunishments()
@@ -138,12 +138,12 @@ export default {
 				this.dialogTitle = '添加奖励'
 				this.isAddReward = true
 			} else {
-				this.dialogTitle = '添加惩罚'
+				this.dialogTitle = '添加处罚'
 				this.isAddReward = false
 			}
 		},
 		/**
-		 * 添加奖励或惩罚
+		 * 添加奖励或处罚
 		 */
 		add() {
 			this.$refs.rewAndPuniForm.validate((valid) => {
@@ -169,7 +169,7 @@ export default {
 				}
 			})
 		},
-		// 删除奖励或惩罚
+		// 删除奖励或处罚
 		remove(isReward, id) {
 			this.$confirm('是否确定要删除这条数据?', '提示', {
                 confirmButtonText: '确定',

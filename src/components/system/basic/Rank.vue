@@ -25,7 +25,7 @@
             :filter-method="filterTag">
                 <!-- 根据不同的级别显示不同的标签样式 -->
                 <template slot-scope="scope">
-                    <el-tag :type="changeTagType(scope.row.level)" size="medium">{{ scope.row.level }}</el-tag>
+                    <el-tag :type="changeTagType(scope.row.level)" size="medium" effect="dark">{{ scope.row.level }}</el-tag>
                 </template>
             </el-table-column>
             <!-- 创建时间 -->

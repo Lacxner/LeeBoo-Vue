@@ -11,7 +11,7 @@
         <!-- 工资账套列表 -->
         <el-table :data="tableData.filter(data => !search 
             || data.name.toLowerCase().includes(search.toLowerCase()))"
-        ref="salaryTable" max-height="660" fit @selection-change="handleSelectionChange"
+        ref="salarySobTable" max-height="660" fit @selection-change="handleSelectionChange"
         v-loading="tableLoading" element-loading-text="加载中" style="margin: 20px 0px">
             <!-- 勾选框 -->
             <el-table-column :resizable="false" fixed header-align="center" align="center" type="selection" width="80"></el-table-column>
@@ -117,7 +117,7 @@
             </el-steps>
             
             <!-- 工资账套表单 -->
-            <el-form :model="formData" ref="salaryForm" :rules="formRules" status-icon>
+            <el-form :model="formData" ref="salarySobForm" :rules="formRules" status-icon>
                 <!-- 账套名称 -->
                 <el-form-item label="账套名称" prop="name" size="medium" v-show="activeIndex === 0" label-width="80px">
                     <el-input type="input" v-model="formData.name" autocomplete="off" style="width: 300px"></el-input>
@@ -186,7 +186,7 @@
 </template>
 
 <script>
-import * as Salary from '@/api/salary'
+import * as SalarySob from '@/api/salarySob'
 import * as Message from '@/utils/message'
 import * as Generic from '@/utils/generic'
 
@@ -239,16 +239,17 @@ export default {
         }
     },
     created() {
-        this.refreshAllSalary()
+        this.refreshAllSalarySob()
     },
     methods: {
         /**
          * 获取所有工资账套
          */
-        refreshAllSalary(res) {
+        refreshAllSalarySob(res) {
             // 获取所有工资账套
-            Salary.getAllSalary()
+            SalarySob.getAllSalarySob()
             .then(response => {
+                console.log(response.data.items)
                 this.tableData = response.data.items
                 Message.handle(res)
                 this.tableLoading = false
@@ -272,7 +273,7 @@ export default {
         },
         // 对话框右边按钮的点击事件
         rightButton() {
-            this.$refs.salaryForm.validate((valid) => {
+            this.$refs.salarySobForm.validate((valid) => {
                 if (valid) {
                     // 步骤条变化
                     if (this.activeIndex <= 6) {
@@ -280,7 +281,7 @@ export default {
                     }
                     // 按钮变化
                     if (this.activeIndex === 7) {
-                        this.addOrEditSalary()
+                        this.addOrEditSalarySob()
                     } else if (this.activeIndex === 7) {
                         this.rightButtonText = '确定'
                     } else {
@@ -294,14 +295,14 @@ export default {
          * 点击添加或编辑按钮时打开对话框，对话框会动态适应
          * 如果是修改操作就传入当前要编辑的工资账套，反之添加就传入null
          */
-        openDialog(currentSalary) {
+        openDialog(currentSalarySob) {
             // 根据方法是否传入工资账套来判断是添加或是编辑对话框
-            if (currentSalary) {
+            if (currentSalarySob) {
                 this.dialogTitle = '修改工资账套'
 
                 // 数据回显
                 this.$nextTick(() => {
-                    this.formData = Generic.deeper(currentSalary)
+                    this.formData = Generic.deeper(currentSalarySob)
                 })
             } else {
                 this.dialogTitle = '添加工资账套'
@@ -311,7 +312,7 @@ export default {
         /**
          * 添加或修改工资账套
          */
-        addOrEditSalary() {
+        addOrEditSalarySob() {
             // 点击了确定后立马关闭对话框并开启加载中提示，提高用户体验
             this.dialogVisible = false
             this.tableLoading = true
@@ -327,20 +328,20 @@ export default {
             this.formData.accumulationFundBase = this.formData.accumulationFundBase == null ? 0 : this.formData.accumulationFundBase
             this.formData.accumulationFundPer = this.formData.accumulationFundPer == null ? 0 : this.formData.accumulationFundPer
 
-            this.computeAllSalary()
+            this.computeAllSalarySob()
             // 如果当前表单数据的id属性有值就代表要修改，反之就表示添加
             if (this.formData.id) {
                 // 修改工资账套
-                Salary.updateSalary(this.formData)
+                SalarySob.updateSalarySob(this.formData)
                 .then(response => {
-                    this.refreshAllSalary(response)
+                    this.refreshAllSalarySob(response)
                 })
             } else {
                 this.addLoading = true
                 // 添加工资账套
-                Salary.addSalary(this.formData)
+                SalarySob.addSalarySob(this.formData)
                 .then(response => {
-                    this.refreshAllSalary(response)
+                    this.refreshAllSalarySob(response)
                     this.addLoading = false
                 })
             }
@@ -348,7 +349,7 @@ export default {
         /**
          * 删除工资账套
          */
-        deleteSalary(id) {
+        deleteSalarySob(id) {
             // 再次确认删除
             this.$confirm('是否确定要删除这条数据?', '提示', {
                 confirmButtonText: '确定',
@@ -357,9 +358,9 @@ export default {
             }).then(() => {
                 // 删除指定工资账套
                 this.tableLoading = true
-                Salary.deleteSalaryById(id)
+                SalarySob.deleteSalarySobById(id)
                 .then(response => {
-                    this.refreshAllSalary(response)
+                    this.refreshAllSalarySob(response)
                 })
             }).catch(action => {})
         },
@@ -383,9 +384,9 @@ export default {
                     })
                     
                     // 批量删除选中的工资账套，删除成功后刷新工资账套列表
-                    Salary.deleteBatchSalaryByIds(ids)
+                    SalarySob.deleteBatchSalarySobByIds(ids)
                     .then(response => {
-                        this.refreshAllSalary(response)
+                        this.refreshAllSalarySob(response)
                         this.batchDeleteLoading = false
                     })
                 }
@@ -396,7 +397,7 @@ export default {
          */
         cancelSelection() {
             if (this.multipleSelection.length > 0) {
-                this.$refs.salaryTable.clearSelection()
+                this.$refs.salarySobTable.clearSelection()
             }
         },
         /**
@@ -408,7 +409,7 @@ export default {
         /**
          * 计算应发工资
          */
-        computeAllSalary() {
+        computeAllSalarySob() {
             this.formData.allSalary
             = this.formData.basicSalary + this.formData.trafficSalary
             - (this.formData.pensionBase * this.formData.pensionPer / 100)
@@ -419,7 +420,7 @@ export default {
          * 重置表单并清除校验结果
          */
         resetFormData() {
-            this.$refs.salaryForm.resetFields()
+            this.$refs.salarySobForm.resetFields()
             this.activeIndex = 0
             this.leftButtonText = '取消'
             this.rightButtonText = '下一步'

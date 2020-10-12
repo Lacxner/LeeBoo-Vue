@@ -4,7 +4,7 @@
         <div>
             <el-input placeholder="请输入操作员用户名" v-model="username" clearable style="width: 400px; text-align: center" size="medium"></el-input>
             <!-- 查找按钮 -->
-            <el-button type="primary" @click="search" style="margin-left: 20px" size="medium" icon="el-icon-search">查找</el-button>
+            <el-button type="primary" @click="search" style="margin-left: 20px" size="medium" icon="el-icon-search" :loading="searching">查找</el-button>
         </div>
 
         <!-- 中间部分 -->
@@ -24,7 +24,7 @@
             :filter-method="filterTag">
                 <!-- 根据不同的方式显示不同的标签样式 -->
                 <template slot-scope="scope">
-                    <el-tag :type="changeTagType(scope.row.pattern)" size="medium">{{ scope.row.pattern }}</el-tag>
+                    <el-tag :type="changeTagType(scope.row.pattern)" size="medium" effect="dark">{{ scope.row.pattern }}</el-tag>
                 </template>
             </el-table-column>
             <!-- URL -->
@@ -68,6 +68,8 @@ export default {
             deleteAllLoading: false,
             // 搜索内容
             username: null,
+            // 查找中提示
+            searching: false,
             // 当前页码
             currentPage: 1,
             // 每页显示数
@@ -90,10 +92,8 @@ export default {
         changeTagType(pattern) {
             return function(pattern) {
                     switch (pattern) {
-                        case '查询':
-                            return 'success'
                         case '添加':
-                            return 'primary'
+                            return 'info'
                         case '修改':
                             return 'warning'
                         case '删除':
@@ -115,6 +115,7 @@ export default {
                 this.total = response.data.total
                 Message.handle(res)
                 this.tableLoading = false
+                this.searching = false
             })
         },
         /**
@@ -123,6 +124,7 @@ export default {
         search() {
             this.username = this.username === '' ? null : this.username
             this.tableLoading = true
+            this.searching = true
             this.refreshAllLogs()
         },
         /**

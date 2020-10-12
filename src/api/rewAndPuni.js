@@ -10,6 +10,15 @@ export function getAllRewardsAndPunishments() {
     })
 }
 
+export function getRewardsAndPunishmentsByEmployeeName(name) {
+    return Axios({
+        method: 'get',
+        baseURL: BASE_URL,
+        url: `/getRewardsAndPunishmentsByEmployeeName/${name}`,
+        params: name
+    })
+}
+
 export function addReward(reward) {
     return Axios({
         method: 'post',

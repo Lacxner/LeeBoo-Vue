@@ -4,7 +4,7 @@
         <div>
             <el-input placeholder="请输入员工姓名" v-model="name" clearable style="width: 400px; text-align: center" size="medium"></el-input>
             <!-- 查找按钮 -->
-            <el-button type="primary" @click="search" style="margin-left: 20px" size="medium" icon="el-icon-search">查找</el-button>
+            <el-button type="primary" @click="search" style="margin-left: 20px" size="medium" icon="el-icon-search" :loading="searching">查找</el-button>
         </div>
 
         <!-- 员工工资表 -->
@@ -19,7 +19,7 @@
                 </div>
                 <!-- 奖金 -->
                 <div>
-                    <span>奖金</span>{{ salary.bonus }} 元
+                    <span>奖金</span>{{ salary.reward }} 元
                 </div>
                 <!-- 罚金 -->
                 <div>
@@ -73,7 +73,9 @@ export default {
             // 查询的员工的名称
             name: null,
             // 加载中提示
-            loading: null
+            loading: null,
+            // 查找中提示
+            searching: false,
         }
     },
     methods: {
@@ -86,15 +88,17 @@ export default {
                 target: document.getElementById('salaryTable'),
                 text: '加载中'
             })
+            this.searching = true
             this.name = this.name === '' ? null : this.name
 
-            Salary.getSalaryByName(this.name)
+            Salary.getSalaryByEmployeeName(this.name)
             .then(response => {
                 this.salary = response.data.item
                 if (response.data.item == null) {
                     Message.handle(response)
                 }
                 this.loading.close()
+                this.searching = false
             })
         },
     }

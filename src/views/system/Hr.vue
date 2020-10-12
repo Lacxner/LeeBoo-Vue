@@ -27,7 +27,7 @@
                     </el-form-item>
                     <el-form-item label="角色">
                         <div v-if="props.row.roles.length">
-                            <el-tag v-for="(role, index) in props.row.roles" :key="index" disable-transitions size="medium" :style="index !== 0 ? 'margin-left: 10px' : ''">
+                            <el-tag v-for="(role, index) in props.row.roles" :key="index" effect="dark" type="info" disable-transitions size="medium" :style="index !== 0 ? 'margin-left: 10px' : ''">
                                 {{ role.nameZh }}
                             </el-tag>
                         </div>
