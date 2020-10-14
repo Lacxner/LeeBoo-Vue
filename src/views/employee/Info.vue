@@ -8,9 +8,9 @@
                     <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
                 <!-- 高级搜索按钮 -->
-                <el-button type="primary" @click="searchDialogVisible = true" style="margin-left: 20px" size="medium" icon="fa fa-filter"> 高级搜索</el-button>
+                <el-button type="primary" @click="searchDialogVisible = true" style="margin-left: 20px" size="medium" icon="fa fa-filter" :loading="searching"> 高级搜索</el-button>
                 <!-- 重置按钮 -->
-                <el-button type="primary" @click="resetSearchFormData" size="medium" icon="fa fa-times"></el-button>
+                <el-button type="primary" @click="resetSearchFormData" size="medium" icon="fa fa-refresh"></el-button>
             </div>
             <div>
                 <!-- 添加员工按钮 -->
@@ -266,7 +266,7 @@
                     </el-col>
 
                     <!-- 部门 -->
-                    <el-col :span="6">
+                    <el-col :span="6" v-show="isAdd">
                         <div class="grid-content bg-purple">
                             <el-form-item label="部门" prop="department.id" size="medium">
                                 <el-cascader ref="employeeDepartmentCascader" :options="departments" v-model="employeeFormData.department.id" :props="props"
@@ -275,7 +275,7 @@
                         </div>
                     </el-col>
                     <!-- 职称 -->
-                    <el-col :span="6">
+                    <el-col :span="6" v-show="isAdd">
                         <div class="grid-content bg-purple">
                             <el-form-item label="职称" prop="rank.id" size="medium">
                                 <el-select v-model="employeeFormData.rank.id" placeholder="请选择" style="width: 100%">
@@ -285,7 +285,7 @@
                         </div>
                     </el-col>
                     <!-- 职位 -->
-                    <el-col :span="6">
+                    <el-col :span="6" v-show="isAdd">
                         <div class="grid-content bg-purple">
                             <el-form-item label="职位" prop="position.id" size="medium">
                                 <el-select v-model="employeeFormData.position.id" placeholder="请选择" style="width: 100%">
@@ -329,7 +329,7 @@
                         </div>
                     </el-col>
                     <!-- 工号 -->
-                    <el-col :span="6">
+                    <el-col :span="6" v-show="isAdd">
                         <div class="grid-content bg-purple">
                             <el-form-item label="工号" prop="workID" size="medium" :required="true">
                                 <el-input type="input" v-model="employeeFormData.workID" autocomplete="off" disabled></el-input>
@@ -472,6 +472,8 @@ export default {
         return {
             // 批量删除中提示
             batchDeleteLoading: false,
+            // 高级搜索中提示
+            searching: false,
             // 添加中提示
             addLoading: false,
             // 表格加载中提示
@@ -480,6 +482,8 @@ export default {
             uploadLoading: false,
             // 搜索内容
             search: '',
+            // 判断当前是添加还是编辑对话框
+            isAdd: true,
             // 总员工数
             total: 0,
             // 当前页码
@@ -666,12 +670,6 @@ export default {
         this.refreshAllEmployees()
         this.initBasicOptions()
     },
-    filters: {
-        /**
-         * 计算工龄
-         */
-        
-    },
     methods: {
         /**
          * 获取所有员工
@@ -793,14 +791,14 @@ export default {
             // 根据方法是否传入员工来判断是添加或是编辑对话框
             if (currentEmployee) {
                 this.dialogTitle = '修改员工'
-
+                this.isAdd = false
                 // 数据回显
                 this.$nextTick(() => {
                     this.employeeFormData = Generic.deeper(currentEmployee)
                 })
             } else {
                 this.dialogTitle = '添加员工'
-
+                this.isAdd = true
                 Employee.getMaxWorkID()
                 .then(response => {
                     this.employeeFormData.workID = response.data.item
@@ -1032,7 +1030,7 @@ export default {
             this.$refs.searchForm.validate((valid) => {
                 if (valid) {
                     this.searchDialogVisible = false
-                    this.tableLoading = true
+                    this.searching = true
 
                     // 获取级联选择器当前选中项的id，因为级联选择器获取的是选中项路径中所有项的id数组
                     if (typeof(this.searchFormData.department.id) !== 'number' && this.searchFormData.department.id instanceof Array) {
@@ -1049,8 +1047,8 @@ export default {
                         // 员工总数
                         this.total = response.data.total
                         Message.handle(res)
-                        this.tableLoading = false
                         this.isAdvancedSearch = true
+                        this.searching = false
                     })
                 }
             })
@@ -1067,4 +1065,3 @@ export default {
     font-weight: 600;
 }
 </style>
-

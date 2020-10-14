@@ -91,8 +91,8 @@ export default {
             formRules: {
                 name: [
                     { required: true, message: '名称不能为空！', trigger: 'blur' },
-                    { min: 2, max: 12, message: '名称长度必须在2~12之间！',  trigger: 'blur' },
-                    { pattern: /^[\w（）\u4e00-\u9fa5]{2,12}$/, message: '名称含有非法字符！', trigger: 'blur' }
+                    { min: 2, max: 8, message: '名称长度必须在2~8之间！',  trigger: 'blur' },
+                    { pattern: /^[\w（）\u4e00-\u9fa5]{2,8}$/, message: '名称含有非法字符！', trigger: 'blur' }
                 ],
                 money: [
                     { required: true, message: '金额不能为空！', trigger: 'blur' }
@@ -193,7 +193,7 @@ export default {
 						this.refreshAllRewardsAndPunishments(response)
 					})
 				}
-            }).catch(action => { })
+            }).catch(action => {})
 		},
 		/**
 		 * 重置表单

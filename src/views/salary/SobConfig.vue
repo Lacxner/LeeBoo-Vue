@@ -37,23 +37,19 @@
                             <table>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">基础工资</el-tag>
-                                    <td>￥{{ scope.row.salarySob.basicSalarySob }}</td>
-                                </tr>
-                                <tr>
-                                    <el-tag size="mini" style="margin-right: 10px">奖金</el-tag>
-                                    <td>￥{{ scope.row.salarySob.reward }}</td>
+                                    <td>￥{{ scope.row.salarySob.basicSalary }}</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">午餐补助</el-tag>
-                                    <td>￥{{ scope.row.salarySob.lunchSalarySob }}</td>
+                                    <td>￥{{ scope.row.salarySob.lunchSalary }}</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">交通补助</el-tag>
-                                    <td>￥{{ scope.row.salarySob.trafficSalarySob }}</td>
+                                    <td>￥{{ scope.row.salarySob.trafficSalary }}</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">应发工资</el-tag>
-                                    <td>￥{{ scope.row.salarySob.allSalarySob }}</td>
+                                    <td>￥{{ scope.row.salarySob.allSalary }}</td>
                                 </tr>
                                 <tr>
                                     <el-tag size="mini" style="margin-right: 10px">养老保险基数</el-tag>
@@ -136,8 +132,6 @@ export default {
             searching: false,
             // 搜索的员工姓名
             name: null,
-            // 判断是添加还是编辑
-            isEdit: true,
             // 当前页码
             currentPage: 1,
             // 每页显示数
@@ -226,9 +220,6 @@ export default {
             this.$nextTick(() => {
                 if (currentEmployeeSalarySob.salarySob) {
                     this.formData.id = currentEmployeeSalarySob.salarySob.id
-                    this.isEdit = true
-                } else {
-                    this.isEdit = false
                 }
                 this.employeeId = currentEmployeeSalarySob.id
             })
@@ -243,17 +234,10 @@ export default {
                     this.dialogVisible = false
                     this.tableLoading = true
 
-                    if (this.isEdit) {
-                        SalarySob.updateEmployeeSalarySob(this.formData.id, this.employeeId)
-                        .then(response => {
-                            this.refreshAllEmployeeSalarySob(response)
-                        })
-                    } else {
-                        SalarySob.addEmployeeSalarySob(this.formData.id, this.employeeId)
-                        .then(response => {
-                            this.refreshAllEmployeeSalarySob(response)
-                        })
-                    }
+                    SalarySob.updateEmployeeSalarySob(this.formData.id, this.employeeId)
+                    .then(response => {
+                        this.refreshAllEmployeeSalarySob(response)
+                    })
                 } else {
                     return false
                 }

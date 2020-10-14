@@ -79,26 +79,22 @@ export function deletePunishmentById(id) {
     })
 }
 
-export function deleteEmployeeReward(employeeId, rewardId) {
+export function removeEmployeeReward(employeeId, reward) {
     return Axios({
         method: 'delete',
         baseURL: BASE_URL,
-        url: `/deleteEmployeeReward/${employeeId}/${rewardId}`,
-        params: {
-            employeeId,
-            rewardId
-        }
+        url: `/removeEmployeeReward/${employeeId}`,
+        params: employeeId,
+        data: reward
     })
 }
 
-export function deleteEmployeePunishment(employeeId, punishmentId) {
+export function removeEmployeePunishment(employeeId, punishment) {
     return Axios({
         method: 'delete',
         baseURL: BASE_URL,
-        url: `/deleteEmployeePunishment/${employeeId}/${punishmentId}`,
-        params: {
-            employeeId,
-            punishmentId
-        }
+        url: `/removeEmployeePunishment/${employeeId}`,
+        params: employeeId,
+        data: punishment
     })
 }

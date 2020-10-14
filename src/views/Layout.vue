@@ -5,11 +5,16 @@
             <!-- 系统标题 -->
             <div class="title">力朴人事管理系统</div>
             <div style="display: flex; flex-direction: row; align-items: center">
+                <!-- 全屏按钮 -->
+                <el-button  type="text" class="headerButton" @click="toggleFullScreen" style="margin-right: 0px">
+                    <i class="fa fa-arrows-alt" style="font-size: 23px"></i>
+                </el-button>
+
                 <!-- 聊天按钮 -->
-                <el-button  type="text" class="chatButton" @click="chatDialogVisible = true">
+                <el-button  type="text" class="headerButton" @click="chatDialogVisible = true" v-if="user">
                     <!-- 未读消息标记 -->
-                    <el-badge :value="badge[user.username]" :max="99" :hidden="badge[user.username] > 0 ? false : true"  v-if="user">
-                        <i class="fa fa-comments fa-2x" style="width: 25px"></i>
+                    <el-badge :value="badge[user.username]" :max="99" :hidden="badge[user.username] > 0 ? false : true">
+                        <i class="fa fa-comments" style="font-size: 25px"></i>
                     </el-badge>
                 </el-button>
 
@@ -199,7 +204,34 @@ export default {
          */
         clearBadge() {
             this.$store.commit('clearBadeg')
-        }
+        },
+        // 切换全屏
+        toggleFullScreen() {
+            if (!document.fullscreenElement && !document.mozFullScreenElement
+            && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                // 开启全屏
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+            } else {
+                // 关闭全屏
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.msExitFullscreen) { // IE和Edge
+                    document.msExitFullscreen();
+                } else if (document.mozCancelFullScreen) { // Firefox
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { // Chrome、Safari和Opera
+                    document.webkitExitFullscreen();
+                }
+            }
+        },
     }
 }
 </script>
@@ -215,18 +247,13 @@ export default {
 .el-avatar {
     margin-right: 8px;
 }
-/* 当前时间和登录用户的右侧Flex布局 */
-.rightFlex {
-    display: flex;
-    flex-direction: row;
-}
 /* 聊天按钮 */
-.chatButton {
+.headerButton {
     color: white;
     margin-right: 20px;
     width: 40px;
 }
-.chatButton:focus, .chatButton:hover {
+.headerButton:focus, .headerButton:hover {
     color: white;
 }
 /* 消息标记 */

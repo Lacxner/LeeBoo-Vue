@@ -8,7 +8,7 @@
         </div>
 
         <!-- 员工工资表 -->
-        <el-card id="salaryTable" class="box-card">
+        <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span style="font-size: 22px">工资表</span>
             </div>
@@ -72,8 +72,6 @@ export default {
             salary: null,
             // 查询的员工的名称
             name: null,
-            // 加载中提示
-            loading: null,
             // 查找中提示
             searching: false,
         }
@@ -83,11 +81,6 @@ export default {
          * 查询指定员工的工资表
          */
         search() {
-            this.loading = this.$loading({
-                lock: true,
-                target: document.getElementById('salaryTable'),
-                text: '加载中'
-            })
             this.searching = true
             this.name = this.name === '' ? null : this.name
 
@@ -97,7 +90,6 @@ export default {
                 if (response.data.item == null) {
                     Message.handle(response)
                 }
-                this.loading.close()
                 this.searching = false
             })
         },

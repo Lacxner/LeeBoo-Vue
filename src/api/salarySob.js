@@ -83,15 +83,3 @@ export function updateEmployeeSalarySob(salarySobId, employeeId) {
         }
     })
 }
-
-export function addEmployeeSalarySob(salarySobId, employeeId) {
-    return Axios({
-        method: 'post',
-        baseURL: BASE_URL_SET_OF_BOOKS_CONFIG,
-        url: `/addEmployeeSalarySob/${salarySobId}/${employeeId}`,
-        params: {
-            salarySobId,
-            employeeId
-        }
-    })
-}

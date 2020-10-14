@@ -97,7 +97,7 @@
                     <el-button size="mini" style="width: 70px" @click="openDialog(scope.row)">
                     <i class="el-icon-edit"></i> 编辑</el-button>
                     <!-- 删除按钮 -->
-                    <el-button size="mini" type="danger" style="width: 70px" @click="deleteSalary(scope.row.id)">
+                    <el-button size="mini" type="danger" style="width: 70px" @click="deleteSalarySob(scope.row.id)">
                     <i class="fa fa-trash"></i> 删除</el-button>
                 </template>
             </el-table-column>
@@ -249,7 +249,6 @@ export default {
             // 获取所有工资账套
             SalarySob.getAllSalarySob()
             .then(response => {
-                console.log(response.data.items)
                 this.tableData = response.data.items
                 Message.handle(res)
                 this.tableLoading = false
@@ -328,7 +327,6 @@ export default {
             this.formData.accumulationFundBase = this.formData.accumulationFundBase == null ? 0 : this.formData.accumulationFundBase
             this.formData.accumulationFundPer = this.formData.accumulationFundPer == null ? 0 : this.formData.accumulationFundPer
 
-            this.computeAllSalarySob()
             // 如果当前表单数据的id属性有值就代表要修改，反之就表示添加
             if (this.formData.id) {
                 // 修改工资账套
@@ -405,16 +403,6 @@ export default {
          */
         handleSelectionChange(val) {
             this.multipleSelection = val
-        },
-        /**
-         * 计算应发工资
-         */
-        computeAllSalarySob() {
-            this.formData.allSalary
-            = this.formData.basicSalary + this.formData.trafficSalary
-            - (this.formData.pensionBase * this.formData.pensionPer / 100)
-            - (this.formData.medicalBase * this.formData.medicalPer / 100)
-            - (this.formData.accumulationFundBase * this.formData.accumulationFundPer / 100)
         },
         /**
          * 重置表单并清除校验结果

@@ -3,11 +3,13 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
+import locale from 'element-ui/lib/locale/lang/en'
 import './theme/index.css'
 import './utils/routerGuard'
 import 'font-awesome/css/font-awesome.min.css'
 
 Vue.use(ElementUI)
+Vue.use(ElementUI, { locale })
 
 /* 
  * 阻止启动生产消息

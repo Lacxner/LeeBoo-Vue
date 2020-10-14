@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 日历 -->
-        <el-calendar v-model="date">
+        <el-calendar id="paydayCalendar" v-model="date">
             <template slot="dateCell" slot-scope="{date, data}">
                 <div class="cell" @click="confirmPayday(data)">
                     <p :class="data.isSelected ? 'is-selected' : ''" >
@@ -23,10 +23,12 @@ export default {
             // 选中的日期
             date: null,
             // 当前月份
-            currentMonth: null
+            currentMonth: null,
+            // 加载中提示
+            loading: null
         }
     },
-    created() {
+    mounted() {
         this.initPayday()
     },
     methods: {
@@ -34,11 +36,17 @@ export default {
          * 初始化发薪日
          */
         initPayday() {
+            this.loading = this.$loading({
+                lock: true,
+                target: document.getElementById('paydayCalendar'),
+                text: '加载中'
+            })
             Payday.getPayday()
             .then(response => {
                 this.date = new Date().setDate(response.data.item.day)
                 // 获取当前月份
                 this.currentMonth = new Date(this.date).getMonth() + 1
+                this.loading.close()
             })
         },
         /**
