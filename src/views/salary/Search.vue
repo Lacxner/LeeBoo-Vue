@@ -118,6 +118,7 @@ export default {
 .box-card {
     width: 700px;
     margin-top: 20px;
+    border-radius: 8px;
 }
 .items div:last-child {
     font-size: 22px !important;

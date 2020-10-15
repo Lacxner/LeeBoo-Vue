@@ -47,4 +47,7 @@ export default {
 .el-tabs {
     margin-top: 20px;
 }
+.el-tabs /deep/ .el-tabs__item {
+    font-weight: 600;
+}
 </style>

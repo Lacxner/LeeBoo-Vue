@@ -262,7 +262,8 @@ export default {
 	color: gray;
 }
 .box-card {
-    margin-top: 20px;
     width: 700px;
+    margin-top: 20px;
+    border-radius: 8px;
 }
 </style>

@@ -310,12 +310,12 @@ export default {
 /* 一级菜单 */
 .oneLevelMenuIcon {
     margin-right: 14px;
-    font-size: 20px
+    font-size: 22px
 }
 /* 二级菜单 */
 .twoLevelMenuIcon {
     margin-right: 10px;
-    font-size: 20px
+    font-size: 22px
 }
 .el-menu-item {
     display: flex;

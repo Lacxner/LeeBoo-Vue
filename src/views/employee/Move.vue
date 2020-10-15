@@ -235,6 +235,7 @@ export default {
 .box-card {
     width: 700px;
     margin-top: 20px;
+    border-radius: 8px;
 }
 .items div:last-child {
     margin-bottom: 0px;
