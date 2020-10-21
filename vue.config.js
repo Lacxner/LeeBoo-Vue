@@ -1,11 +1,6 @@
 let proxyObject = {}
 
 // 定义Node.js代理对象
-proxyObject['/ws'] = {
-    ws: true,
-    target: 'ws://localhost:8080'
-}
-
 proxyObject['/'] = {
     ws: false,
     target: 'http://localhost:8080',

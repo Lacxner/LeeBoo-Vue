@@ -4,8 +4,8 @@
         <el-input placeholder="请输入关键字进行筛选" v-model="search" clearable style="width: 500px; text-align: center" size="medium">
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
-        <!-- 添加权限按钮 -->
-        <el-button type="primary" @click="openDialog(null)" style="margin-left: 20px" size="medium" icon="el-icon-plus" :loading="addLoading">添加权限</el-button>
+        <!-- 添加角色按钮 -->
+        <el-button type="primary" @click="openDialog(null)" style="margin-left: 20px" size="medium" icon="el-icon-plus" :loading="addLoading">添加角色</el-button>
 
         <!-- 中间部分 -->
         <!-- 角色列表 -->
@@ -36,9 +36,9 @@
             </el-table-column>
         </el-table>
 
-        <!-- 添加或编辑权限对话框 -->
+        <!-- 添加或编辑角色对话框 -->
         <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="500px" :close-on-click-modal="false" @closed="resetFormData">
-            <!-- 权限表单 -->
+            <!-- 角色表单 -->
             <el-form :model="formData" ref="roleForm" :rules="formRules" status-icon label-width="52px">
                 <!-- 角色名称 -->
                 <el-form-item label="名称" prop="name" size="medium">
@@ -51,7 +51,7 @@
                     <el-input type="input" v-model="formData.nameZh" autocomplete="off"></el-input>
                 </el-form-item>
                 <!-- 角色权限 -->
-                <el-form-item label="权限" prop="authorities" size="medium">
+                <el-form-item label="角色" prop="authorities" size="medium">
                     <el-tree ref="tree" id="roleTree" :props="props" :data="authorities" show-checkbox
                     accordion highlight-current node-key="id" :default-checked-keys="defaultCheckedKeys" empty-text="暂无数据"></el-tree>
                 </el-form-item>
@@ -65,7 +65,7 @@
         </el-dialog>
 
         <!-- 底部 -->
-        <!-- 批量删除权限按钮 -->
+        <!-- 批量删除角色按钮 -->
         <el-button type="danger" @click="deleteSelection" size="medium" icon="fa fa-trash" :loading="batchDeleteLoading"> 批量删除</el-button>
         <!-- 取消全部的选中项按钮 -->
         <el-button @click="cancelSelection" size="medium" icon="fa fa-ban"> 全部取消</el-button>
@@ -149,7 +149,7 @@ export default {
          * 获取所有角色
          */
         refreshAllRoles(res) {
-            // 获取所有权限
+            // 获取所有角色
             Role.getAllRoles()
             .then(response => {
                 this.tableData = response.data.items
@@ -231,7 +231,7 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.tableLoading = true
-                // 删除指定权限
+                // 删除指定角色
                 Role.deleteRoleById(id)
                 .then(response => {
                     this.refreshAllRoles(response)
@@ -252,13 +252,13 @@ export default {
                     this.batchDeleteLoading = true
                     this.tableLoading = true
 
-                    // 提取出所有选中权限的id并封装成一个数组
+                    // 提取出所有选中角色的id并封装成一个数组
                     let ids = []
                     this.multipleSelection.forEach(selection => {
                         ids.push(selection.id)
                     })
                     
-                    // 批量删除选中的权限，删除成功后刷新权限列表
+                    // 批量删除选中的角色，删除成功后刷新角色列表
                     Role.deleteBatchRoleByIds(ids)
                     .then(response => {
                         this.refreshAllRoles(response)

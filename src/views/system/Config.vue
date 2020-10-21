@@ -52,11 +52,11 @@ export default {
             formRules: {
                 company: [
                     { required: true, message: '公司名称不能为空！', trigger: 'blur' },
-                    { min: 6, max: 18, message: '公司名称长度必须在6~18之间！',  trigger: 'blur' },
-                    { pattern: /^[\w（）\u4e00-\u9fa5]{6,18}$/, message: '公司名称含有非法字符！', trigger: 'blur' }
+                    { min: 4, max: 18, message: '公司名称长度必须在4~18之间！',  trigger: 'blur' },
+                    { pattern: /^[\w（）\u4e00-\u9fa5]{4,18}$/, message: '公司名称含有非法字符！', trigger: 'blur' }
                 ]
 			},
-			// 
+			// 通知的富文本编辑器
 			editor: null
 		}
 	},

@@ -13,9 +13,6 @@
         <el-tab-pane label="奖惩管理" name="rewAndPuni" :lazy="true">
             <RewAndPuni></RewAndPuni>
         </el-tab-pane>
-        <el-tab-pane label="权限管理" name="authority" :lazy="true">
-            <Authority></Authority>
-        </el-tab-pane>
     </el-tabs>
 </template>
 
@@ -24,7 +21,6 @@ import Department from '@/components/system/basic/Department.vue'
 import Position from '@/components/system/basic/Position.vue'
 import Rank from '@/components/system/basic/Rank.vue'
 import RewAndPuni from '@/components/system/basic/RewAndPuni.vue'
-import Authority from '@/components/system/basic/Authority.vue'
 
 export default {
     data() {
@@ -37,8 +33,7 @@ export default {
         Department,
         Position,
         Rank,
-        RewAndPuni,
-        Authority
+        RewAndPuni
     }
 }
 </script>

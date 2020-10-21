@@ -6,20 +6,12 @@
             <div class="title">力朴人事管理系统</div>
             <div style="display: flex; flex-direction: row; align-items: center">
                 <!-- 全屏按钮 -->
-                <el-button  type="text" class="headerButton" @click="toggleFullScreen" style="margin-right: 0px">
+                <el-button type="text" class="headerButton" @click="toggleFullScreen" style="margin-right: 10px">
                     <i class="fa fa-arrows-alt" style="font-size: 23px"></i>
                 </el-button>
 
-                <!-- 聊天按钮 -->
-                <el-button  type="text" class="headerButton" @click="chatDialogVisible = true" v-if="user">
-                    <!-- 未读消息标记 -->
-                    <el-badge :value="badge[user.username]" :max="99" :hidden="badge[user.username] > 0 ? false : true">
-                        <i class="fa fa-comments" style="font-size: 25px"></i>
-                    </el-badge>
-                </el-button>
-
                 <!-- 用户菜单 -->
-                <el-dropdown @command="handleCommand">
+                <el-dropdown @command="handleCommand" trigger="click" size="medium">
                     <span class="el-dropdown-link">
                         <!-- 用户头像 -->
                         <el-avatar shape="square" :src="user.avatar" style="margin-right: 8px" v-if="user"/>
@@ -28,12 +20,14 @@
                         <i class="el-icon-arrow-down el-icon--right"/>
                     </span>
                     <el-dropdown-menu slot="dropdown" style="text-align: center" class="userDropdownMenu">
-                        <el-dropdown-item command="center" style="font-size: 14px" v-if="user">
-                            <i class="fa fa-user-circle-o"></i> 个人中心
-                        </el-dropdown-item>
-                        <el-dropdown-item divided command="logout" style="font-size: 14px" v-if="user">
-                            <i class="fa fa-sign-out"></i> 注销登录
-                        </el-dropdown-item>
+                        <div v-if="user">
+                            <el-dropdown-item command="center" style="font-size: 14px">
+                                <i class="fa fa-user-circle-o"></i> 个人中心
+                            </el-dropdown-item>
+                            <el-dropdown-item divided command="logout" style="font-size: 14px">
+                                <i class="fa fa-sign-out"></i> 注销登录
+                            </el-dropdown-item>
+                            </div>
                         <el-dropdown-item command="login"  style="font-size: 14px" v-else>
                             <i class="fa fa-sign-out"></i> 前往登录
                         </el-dropdown-item>
@@ -92,11 +86,6 @@
                     </el-breadcrumb>
                 </div>
 
-                <!-- 聊天框 -->
-                <el-dialog fullscreen :visible.sync="chatDialogVisible" @opened="clearBadge">
-                    <Dialog/>
-                </el-dialog>
-
                 <!-- 主体路由渲染 -->
                 <router-view style="margin-top: 20px"/>
 
@@ -114,9 +103,8 @@
 
 <script>
 import * as Formatter from '@/utils/formatter'
-import * as User from '@/api/user'
+import * as Login from '@/api/login'
 import * as Message from '@/utils/message'
-import Dialog from '@/components/chat/dialog'
 import { mapState } from 'vuex'
 import { page404, resetRouter } from '@/router'
 
@@ -124,34 +112,26 @@ export default {
     data() {
         return {
             // 菜单栏是否折叠
-            isCollapse: false,
-            // 登录信息
-            // user: null,
-            // 是否打开聊天对话框
-            chatDialogVisible: false
+            isCollapse: false
         }
     },
-    components: {
-        Dialog
-    },
     computed: {
-        routes() {
-            return this.$store.state.routes
+        routes: {
+            get() {
+                return this.$store.state.routes
+            },
+            set(val) {}
         },
-        ...mapState([
-            'badge'
-        ]),
-        user() {
-            return this.$store.state.user
+        user: {
+            get() {
+                return this.$store.state.user
+            },
+            set(val) {}
         }
     },
     created() {
         // 获取Hr登录状态信息
         this.$store.commit('changeUser', JSON.parse(localStorage.getItem('user')))
-        if (this.user) {
-            // 初始化未读消息标记
-            this.$store.dispatch('initBadge')
-        }
     },
     mounted() {
         /**
@@ -161,9 +141,6 @@ export default {
         if (!this.user) {
             resetRouter()
             this.$router.addRoutes([page404])
-        } else {
-            // 如何登录了就连接WebSocket
-            this.$store.dispatch('connect')
         }
     },
     methods: {
@@ -181,7 +158,7 @@ export default {
                     type: 'warning'
                 }).then(() => {
                     // 注销请求
-                    User.logout()
+                    Login.logout()
                     .then(response => {
                         // 注销后清除本地存储登录信息
                         localStorage.removeItem('user')
@@ -198,12 +175,6 @@ export default {
                 // 跳转登录页面
                 this.$router.replace({ path: '/login' })
             }
-        },
-        /**
-         * 打开聊天框时清空未读消息标记
-         */
-        clearBadge() {
-            this.$store.commit('clearBadeg')
         },
         // 切换全屏
         toggleFullScreen() {
@@ -247,7 +218,7 @@ export default {
 .el-avatar {
     margin-right: 8px;
 }
-/* 聊天按钮 */
+/* 顶部按钮 */
 .headerButton {
     color: white;
     margin-right: 20px;
@@ -255,10 +226,6 @@ export default {
 }
 .headerButton:focus, .headerButton:hover {
     color: white;
-}
-/* 消息标记 */
-.el-badge /deep/ .el-badge__content{
-    border: 1px solid red;
 }
 /* 头部下拉菜单 */
 .el-dropdown-link, .el-icon-arrow-down {

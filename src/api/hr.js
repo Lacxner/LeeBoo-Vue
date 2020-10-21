@@ -1,6 +1,6 @@
 import Axios from '@/utils/interceptor'
 
-const BASE_URL = '/system/hr'
+const BASE_URL = '/authority/hr'
 
 export function getAllHrs() {
     return Axios({

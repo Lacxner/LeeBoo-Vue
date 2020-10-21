@@ -1,6 +1,6 @@
 import Axios from '@/utils/interceptor'
 
-const BASE_URL = '/system/basic'
+const BASE_URL = '/authority/role'
 
 export function getAllRoles() {
     return Axios({
